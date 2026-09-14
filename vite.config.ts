@@ -3,7 +3,14 @@ import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
+  // Relative, so the app works wherever it is mounted — currently /self-notes/app/.
   base: './',
+  build: {
+    // The landing page owns the site root; the app lives one level down.
+    // scripts/copy-root.mjs puts the root files in place after this runs.
+    outDir: 'dist/app',
+    emptyOutDir: true,
+  },
   plugins: [
     react(),
     VitePWA({
