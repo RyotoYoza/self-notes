@@ -1,0 +1,340 @@
+<title>Self Build Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap">
+
+<style>
+:root{
+  --bg:#EDEDEA; --bg-2:#F7F7F5; --bg-3:#E4E4E0;
+  --ink:#17181A; --ink-2:#53565C; --ink-3:#83878E;
+  --line:#D6D6D2; --line-2:#C2C2BD;
+  --done:#2E6F4E; --done-bg:#DCE8DF;
+  --wait:#8A5A12; --wait-bg:#F0E6D2;
+  --todo:#6B6F78; --todo-bg:#E2E2DF;
+  --focus:#2C6BE0;
+  --sans:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#141517; --bg-2:#1C1E21; --bg-3:#232629;
+    --ink:#EDEDEA; --ink-2:#A8ACB2; --ink-3:#7B7F86;
+    --line:#2C2F33; --line-2:#3A3E44;
+    --done:#7FC39B; --done-bg:#1B2C22;
+    --wait:#E0B063; --wait-bg:#2E2718;
+    --todo:#8C919A; --todo-bg:#26282C;
+    --focus:#6FA0F5;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#141517; --bg-2:#1C1E21; --bg-3:#232629;
+  --ink:#EDEDEA; --ink-2:#A8ACB2; --ink-3:#7B7F86;
+  --line:#2C2F33; --line-2:#3A3E44;
+  --done:#7FC39B; --done-bg:#1B2C22;
+  --wait:#E0B063; --wait-bg:#2E2718;
+  --todo:#8C919A; --todo-bg:#26282C;
+  --focus:#6FA0F5;
+}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding-inline:20px;padding-block:0 72px}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+
+/* masthead */
+.mast{padding-block:48px 26px;border-bottom:1px solid var(--line)}
+.eyebrow{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin:0 0 12px}
+h1{font-size:clamp(28px,4vw,42px);line-height:1.06;font-weight:900;letter-spacing:-.022em;margin:0 0 12px;text-wrap:balance}
+.lede{margin:0;color:var(--ink-2);max-width:40rem;font-size:15px}
+
+/* progress summary */
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-block:28px}
+.stat{background:var(--bg-2);padding:16px 18px}
+.stat .n{font-family:var(--mono);font-size:30px;font-weight:600;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums;display:block}
+.stat .l{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-top:7px;display:block}
+.stat.is-done .n{color:var(--done)}
+.stat.is-wait .n{color:var(--wait)}
+
+.bar{display:flex;height:10px;border:1px solid var(--line-2);background:var(--bg-3);overflow:hidden;margin-bottom:8px}
+.bar i{display:block;height:100%}
+.bar i.d{background:var(--done)}
+.bar i.w{background:var(--wait)}
+.barkey{display:flex;flex-wrap:wrap;gap:16px;font-family:var(--mono);font-size:10.5px;color:var(--ink-3);letter-spacing:.04em;margin-bottom:34px}
+.barkey span{display:inline-flex;align-items:center;gap:6px}
+.barkey b{width:9px;height:9px;display:inline-block}
+
+/* phases */
+.phase{margin-top:44px}
+.phead{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;padding-bottom:10px;border-bottom:2px solid var(--ink);margin-bottom:0}
+.pnum{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.12em;color:var(--ink-3)}
+.phead h2{margin:0;font-size:20px;font-weight:900;letter-spacing:-.02em}
+.pfrac{margin-left:auto;font-family:var(--mono);font-size:11.5px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.pnote{margin:10px 0 0;font-size:13.5px;color:var(--ink-2);max-width:46rem}
+
+.rows{margin-top:14px;border:1px solid var(--line);background:var(--bg-2)}
+.row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px 18px;padding:13px 16px 13px 14px;border-left:3px solid transparent;align-items:start}
+.row + .row{border-top:1px solid var(--line)}
+.row.done{border-left-color:var(--done)}
+.row.wait{border-left-color:var(--wait)}
+.row.todo{border-left-color:var(--line-2)}
+.row .nm{font-size:14.5px;font-weight:700;letter-spacing:-.008em;margin:0 0 2px}
+.row .de{font-size:13px;color:var(--ink-2);margin:0}
+.row .de code{font-family:var(--mono);font-size:11.5px;background:var(--bg-3);padding:1px 5px;border-radius:2px;overflow-wrap:anywhere}
+.pill{font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:4px 9px;white-space:nowrap;align-self:center}
+.pill.done{background:var(--done-bg);color:var(--done)}
+.pill.wait{background:var(--wait-bg);color:var(--wait)}
+.pill.todo{background:var(--todo-bg);color:var(--todo)}
+@media (max-width:560px){
+  .row{grid-template-columns:1fr}
+  .pill{justify-self:start}
+}
+
+/* proof strip */
+.proof{margin-top:42px;border:1px solid var(--line-2);background:var(--bg-2);padding:20px 22px}
+.proof h2{margin:0 0 12px;font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.proof dl{margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px 28px}
+.proof dt{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);margin-bottom:3px}
+.proof dd{margin:0;font-size:14px;font-variant-numeric:tabular-nums}
+.proof dd b{font-family:var(--mono);font-weight:600}
+
+/* asks */
+.asks{margin-top:42px;border:2px solid var(--ink);padding:22px 24px}
+.asks h2{margin:0 0 4px;font-size:20px;font-weight:900;letter-spacing:-.02em}
+.asks > p{margin:0 0 18px;color:var(--ink-2);font-size:14px;max-width:44rem}
+.ask{display:flex;gap:14px;align-items:baseline;padding:12px 0}
+.ask + .ask{border-top:1px solid var(--line)}
+.ask .q{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--ink-3);width:22px;flex:none}
+.ask .b{flex:1}
+.ask b{display:block;font-size:14.5px;margin-bottom:2px}
+.ask span{font-size:13.5px;color:var(--ink-2)}
+
+footer{margin-top:40px;font-family:var(--mono);font-size:10.5px;color:var(--ink-3);letter-spacing:.06em}
+</style>
+
+<div class="wrap">
+
+<header class="mast">
+  <p class="eyebrow">Self · じぶんメモ — build status</p>
+  <h1>The phone navigates like a messaging app now.</h1>
+  <p class="lede">Every component of the note app, what state it is in, and what proves it works. The data layer was built and tested before any UI existed, so a backup is trustworthy from the first version rather than the tenth.</p>
+</header>
+
+<div class="summary">
+  <div class="stat is-done"><span class="n">20</span><span class="l">Built &amp; verified</span></div>
+  <div class="stat is-wait"><span class="n">5</span><span class="l">Waiting on you</span></div>
+  <div class="stat"><span class="n">2</span><span class="l">Not started</span></div>
+  <div class="stat"><span class="n">16</span><span class="l">Tests passing</span></div>
+</div>
+
+<div class="bar" role="img" aria-label="20 of 27 components built, 5 waiting on input, 2 not started">
+  <i class="d" style="width:74%"></i><i class="w" style="width:18%"></i>
+</div>
+<p class="barkey">
+  <span><b style="background:var(--done)"></b>Built &amp; verified</span>
+  <span><b style="background:var(--wait)"></b>Waiting on your input</span>
+  <span><b style="background:var(--bg-3);border:1px solid var(--line-2)"></b>Not started</span>
+</p>
+
+<!-- PHASE 1 -->
+<section class="phase">
+  <div class="phead">
+    <span class="pnum">Phase 01</span>
+    <h2>Data layer</h2>
+    <span class="pfrac">6 / 6 done</span>
+  </div>
+  <p class="pnote">Built first and on its own. Nothing outside <code style="font-family:var(--mono);font-size:12px">src/storage/</code> touches IndexedDB, so when a server is added later, only that directory changes.</p>
+  <div class="rows">
+    <div class="row done">
+      <div><p class="nm">Schema, sync-ready from day one</p><p class="de">Every note and category carries <code>id</code> (UUID v4), <code>createdAt</code>, <code>updatedAt</code>, <code>syncedAt</code>, <code>deletedAt</code>. Deletes are soft only — nothing is ever removed from disk, so a deletion can still be replayed to a server.</p></div>
+      <span class="pill done">Done</span>
+    </div>
+    <div class="row done">
+      <div><p class="nm">Storage module, four verbs</p><p class="de"><code>get · put · list · remove</code> over IndexedDB via Dexie. <code>put</code> stamps <code>updatedAt</code> and clears <code>syncedAt</code>; <code>remove</code> writes a tombstone rather than deleting.</p></div>
+      <span class="pill done">Done</span>
+    </div>
+    <div class="row done">
+      <div><p class="nm">Export</p><p class="de">One JSON file: every note, every category, the settings and a schema version. Filename carries the date — <code>self-notes-2026-09-15.json</code> — so backups sort and never overwrite each other.</p></div>
+      <span class="pill done">Done</span>
+    </div>
+    <div class="row done">
+      <div><p class="nm">Import, merge and never overwrite</p><p class="de">Unknown id imports. Identical record skips. Same id with different content keeps <em>both</em> — the incoming copy under a fresh id, with replies rewritten to follow their re-homed parent. Summary shown after: imported / already here / kept alongside.</p></div>
+      <span class="pill done">Done</span>
+    </div>
+    <div class="row done">
+      <div><p class="nm">Round-trip test</p><p class="de">Export → wipe → import restores byte-identical state, tombstones and reply links included. Also proven: a second round trip changes nothing, and two fresh installs merge without duplicating their default categories.</p></div>
+      <span class="pill done">Done</span>
+    </div>
+    <div class="row done">
+      <div><p class="nm">Monotonic timestamps</p><p class="de">Three thoughts fired off in one second used to sort arbitrarily and scramble the thread. Each collision now advances a millisecond, so <code>createdAt</code> is strictly increasing and order is never in doubt.</p></div>
+      <span class="pill done">Done</span>
+    </div>
+  </div>
+</section>
+
+<!-- PHASE 2 -->
+<section class="phase">
+  <div class="phead">
+    <span class="pnum">Phase 02</span>
+    <h2>The app</h2>
+    <span class="pfrac">12 / 12 done</span>
+  </div>
+  <p class="pnote">Layout is fixed across both skins: category rail on the left, the selected page in the middle, the chat with yourself on the right.</p>
+  <div class="rows">
+    <div class="row done">
+      <div><p class="nm">Two skins, user-selectable</p><p class="de">Desk and Yakan, plus “follow system” which picks Desk in light mode and Yakan when the device goes dark. Colour, corner radius and typeface all swap from one <code>data-skin</code> attribute.</p></div>
+      <span class="pill done">Done</span>
+    </div>
+    <div class="row done">
+      <div><p class="nm">Composer — category required</p><p class="de">Chips, then the Schedule and Urgent toggles, then send. Enter sends, Shift+Enter makes a line. Japanese IME conversion is left alone, so Enter mid-conversion never fires a half-finished note.</p></div>
+      <span class="pill done">Done</span>
+    </div>
+    <div class="row done">
+      <div><p class="nm">Chat stream, all categories</p><p class="de">One running conversation with yourself for the day, each note tagged with its category colour — as you chose.</p></div>
+      <span class="pill done">Done</span>
+    </div>
+    <div class="row done">
+      <div><p class="nm">Category page</p><p class="de">Urgent notes pinned across the top quarter in red; below them the thread split by day, newest at the bottom. Clicking a pinned note jumps to it in the thread.</p></div>
+      <span class="pill done">Done</span>
+    </div>
+    <div class="row done">
+      <div><p class="nm">Added notes as replies</p><p class="de">A note added onto another lands directly beneath it, on the opposite side, quoting the original — the reply bubble from any chat app. It inherits the parent’s category so the two can never drift apart.</p></div>
+      <span class="pill done">Done</span>
+    </div>
+    <div class="row done">
+      <div><p class="nm">Note menu, three ways in</p><p class="de">Long-press on touch (480 ms, cancelled by a scroll), hover <code>···</code> and right-click on desktop. Add note, urgent, calendar on/off, change date, move category, delete.</p></div>
+      <span class="pill done">Done</span>
+    </div>
+    <div class="row done">
+      <div><p class="nm">Home calendar, week &amp; month</p><p class="de">Only original notes appear — an added note belongs to its parent, not to a day. Each sits in a message bubble; tapping one opens its category page and highlights it.</p></div>
+      <span class="pill done">Done</span>
+    </div>
+    <div class="row done">
+      <div><p class="nm">Settings</p><p class="de">Language, skin, category editing (both labels, colour, delete — deleted categories send their notes to Uncategorised), export, import, storage status.</p></div>
+      <span class="pill done">Done</span>
+    </div>
+    <div class="row done">
+      <div><p class="nm">Phone layout</p><p class="de">Notebook / Memo toggle at the top as specified. Adding a note onto another switches you to Memo automatically, since the composer is otherwise out of sight.</p></div>
+      <span class="pill done">Done</span>
+    </div>
+    <div class="row done">
+      <div><p class="nm">Phone opens on a list of conversations</p><p class="de">Notebook now shows Home, every category and Settings as chat rows — avatar, last note, time, count — and tapping one pushes into it with a back arrow. The slide-over drawer is gone; this replaces it.</p></div>
+      <span class="pill done">Done</span>
+    </div>
+    <div class="row done">
+      <div><p class="nm">Urgent block holds to two rows</p><p class="de">Shows two pinned notes with a <code>3 more ⌄</code> toggle, so a category with nine urgent notes can no longer squeeze the thread off the screen. Expanded it caps at 40% height and scrolls on its own.</p></div>
+      <span class="pill done">Done</span>
+    </div>
+    <div class="row done">
+      <div><p class="nm">Renamed to Memo and Notebook</p><p class="de">Strings only — no schema or component changes, so no bug risk. The composer is <b>Memo</b>, the notes side is <b>Notebook</b>. The placeholder still reads “Message yourself…”, which is the line that carries the whole idea.</p></div>
+      <span class="pill done">Done</span>
+    </div>
+  </div>
+</section>
+
+<!-- PHASE 3 -->
+<section class="phase">
+  <div class="phead">
+    <span class="pnum">Phase 03</span>
+    <h2>Keeping the data alive</h2>
+    <span class="pfrac">2 / 2 done</span>
+  </div>
+  <div class="rows">
+    <div class="row done">
+      <div><p class="nm">Persistent storage request</p><p class="de"><code>navigator.storage.persist()</code> on startup, result logged. When refused, a one-time dismissible banner explains installing to the home screen — with iOS-specific wording, since Safari can clear a bookmarked site after seven days unused.</p></div>
+      <span class="pill done">Done</span>
+    </div>
+    <div class="row done">
+      <div><p class="nm">Installable PWA</p><p class="de">Manifest, icons (including a correct maskable one), service worker precaching the app, and runtime caching for the two skins’ typefaces so an offline launch does not silently fall back to a system font.</p></div>
+      <span class="pill done">Done</span>
+    </div>
+  </div>
+</section>
+
+<!-- PHASE 4 -->
+<section class="phase">
+  <div class="phead">
+    <span class="pnum">Phase 04</span>
+    <h2>Your call before I continue</h2>
+    <span class="pfrac">0 / 5</span>
+  </div>
+  <p class="pnote">These are blocked on material or decisions only you have. Everything above ships without them.</p>
+  <div class="rows">
+    <div class="row wait">
+      <div><p class="nm">Phone direction &amp; palettes</p><p class="de">Three phone directions (Aurora, Kiosk, Cocoon) and five palette candidates are drawn up and waiting on your pick — one direction, two palettes. The two you choose replace Desk and Yakan as the app’s selectable themes.</p></div>
+      <span class="pill wait">Needs you</span>
+    </div>
+    <div class="row wait">
+      <div><p class="nm">Architecture &amp; how-to manual</p><p class="de">The detailed one, for you: data model, module boundaries, how to run, build and deploy, and what changes when a backend arrives.</p></div>
+      <span class="pill wait">After v1 deploys</span>
+    </div>
+    <div class="row wait">
+      <div><p class="nm">User manual</p><p class="de">The short one, written for someone who has never seen the app.</p></div>
+      <span class="pill wait">After v1 deploys</span>
+    </div>
+    <div class="row wait">
+      <div><p class="nm">Single-image poster ad</p><p class="de">One sentence on what it does, over the app UI. You said you would send images and ideas at this point — I will ask.</p></div>
+      <span class="pill wait">Needs your images</span>
+    </div>
+    <div class="row wait">
+      <div><p class="nm">Landing page</p><p class="de">Explains the app and sends people to it. Same — your images and direction first.</p></div>
+      <span class="pill wait">Needs your images</span>
+    </div>
+  </div>
+</section>
+
+<!-- PHASE 5 -->
+<section class="phase">
+  <div class="phead">
+    <span class="pnum">Phase 05</span>
+    <h2>Not started</h2>
+    <span class="pfrac">0 / 3</span>
+  </div>
+  <div class="rows">
+    <div class="row todo">
+      <div><p class="nm">Deployment</p><p class="de">GitHub is authenticated as <code>RyotoYoza</code>, so GitHub Pages is the short path. I need the repo name and whether it is public before I push anything.</p></div>
+      <span class="pill wait">Needs you</span>
+    </div>
+    <div class="row todo">
+      <div><p class="nm">Reordering categories by drag</p><p class="de">Order is stored on every category and respected by the rail; only the dragging is missing. Small job, say if you want it.</p></div>
+      <span class="pill todo">Not started</span>
+    </div>
+    <div class="row todo">
+      <div><p class="nm">Uncategorised sweep</p><p class="de">My suggestion, not in your original plan: a screen to file a batch of Uncategorised notes at once. Waiting on your yes or no.</p></div>
+      <span class="pill todo">Your call</span>
+    </div>
+  </div>
+</section>
+
+<section class="proof">
+  <h2>What is actually verified</h2>
+  <dl>
+    <div><dt>Test suite</dt><dd><b>16 / 16</b> passing</dd></div>
+    <div><dt>Phone nav</dt><dd>List → conversation, verified</dd></div>
+    <div><dt>Type check</dt><dd><b>Clean</b>, strict mode</dd></div>
+    <div><dt>Production build</dt><dd><b>93 KB</b> gzipped</dd></div>
+    <div><dt>Schema version</dt><dd><b>1</b></dd></div>
+    <div><dt>Checked in browser</dt><dd>Both skins, both languages, desktop &amp; phone</dd></div>
+    <div><dt>Storage</dt><dd>IndexedDB, local only</dd></div>
+  </dl>
+</section>
+
+<section class="asks">
+  <h2>Three things from you</h2>
+  <p>In the order they unblock work.</p>
+  <div class="ask">
+    <span class="q">01</span>
+    <span class="b"><b>One phone direction and two palettes</b><span>Both are drawn up in the phone round-two page. The two palettes become the app’s selectable themes.</span></span>
+  </div>
+  <div class="ask">
+    <span class="q">02</span>
+    <span class="b"><b>Repo name, and public or private?</b><span>GitHub Pages needs a public repo unless you have GitHub Pro. Nothing is pushed until you say.</span></span>
+  </div>
+  <div class="ask">
+    <span class="q">03</span>
+    <span class="b"><b>The Uncategorised sweep — yes or no?</b><span>Not part of your original plan, so I have not built it. If choosing a category is mandatory, “Uncategorised, sort later” quietly becomes the default path — this is insurance on that.</span></span>
+  </div>
+</section>
+
+<footer>Updated 15 September 2026 · phone rework · Self / じぶんメモ</footer>
+
+</div>

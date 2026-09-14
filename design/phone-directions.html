@@ -1,0 +1,750 @@
+<title>Phone Directions & Palettes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=M+PLUS+1:wght@400;500;700;800&family=M+PLUS+Rounded+1c:wght@400;500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap">
+<style>
+:root{
+  --pg:#EDEDEA; --pg2:#F7F7F5; --pink:#17181A; --pink2:#53565C; --pink3:#83878E;
+  --pln:#D6D6D2; --pln2:#C2C2BD; --pmark:#1B1C1E; --pmarki:#F7F7F5; --pfocus:#2C6BE0;
+  --psans:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",system-ui,sans-serif;
+  --pmono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --pg:#141517; --pg2:#1C1E21; --pink:#EDEDEA; --pink2:#A8ACB2; --pink3:#7B7F86;
+    --pln:#2C2F33; --pln2:#3A3E44; --pmark:#EDEDEA; --pmarki:#141517; --pfocus:#6FA0F5;
+  }
+}
+:root[data-theme="dark"]{
+  --pg:#141517; --pg2:#1C1E21; --pink:#EDEDEA; --pink2:#A8ACB2; --pink3:#7B7F86;
+  --pln:#2C2F33; --pln2:#3A3E44; --pmark:#EDEDEA; --pmarki:#141517; --pfocus:#6FA0F5;
+}
+*{box-sizing:border-box}
+body{background:var(--pg);color:var(--pink);font-family:var(--psans);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:20px;padding-block:0 76px}
+:focus-visible{outline:2px solid var(--pfocus);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.mast{padding-block:48px 26px;border-bottom:1px solid var(--pln)}
+.eyebrow{font-family:var(--pmono);font-size:11px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--pink3);margin:0 0 12px}
+h1{font-size:clamp(28px,4vw,42px);line-height:1.07;font-weight:900;letter-spacing:-.022em;margin:0 0 14px;text-wrap:balance}
+.lede{margin:0;color:var(--pink2);max-width:40rem}
+.lede b{color:var(--pink);font-weight:700}
+
+.partlbl{font-family:var(--pmono);font-size:11px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--pink3);margin:56px 0 6px;padding-top:10px;border-top:2px solid var(--pink)}
+.parthead{font-size:24px;font-weight:900;letter-spacing:-.022em;margin:0 0 8px}
+.partnote{margin:0 0 6px;color:var(--pink2);max-width:44rem;font-size:14.5px}
+
+.dirsec{padding-top:44px}
+.dirhead{display:flex;align-items:baseline;gap:8px 22px;flex-wrap:wrap;margin-bottom:6px}
+.dirnum{font-family:var(--pmono);font-size:12px;font-weight:600;letter-spacing:.1em;color:var(--pink3)}
+.dirname{margin:0;font-size:26px;font-weight:900;letter-spacing:-.022em}
+.dirname small{display:block;font-size:12px;font-weight:500;letter-spacing:.05em;color:var(--pink3);margin-top:2px}
+.thesis{margin:0 0 24px;color:var(--pink2);max-width:46rem;font-size:14.5px}
+.dirbody{display:grid;grid-template-columns:auto minmax(0,1fr);gap:30px;align-items:start}
+@media (max-width:860px){.dirbody{grid-template-columns:1fr}}
+.phones{display:flex;gap:16px;flex-wrap:wrap}
+.spec h3{font-family:var(--pmono);font-size:10.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--pink3);margin:0 0 10px}
+.spec+.spec{margin-top:24px}
+.spec p{margin:0;font-size:14px;color:var(--pink2)}
+.spec p b{color:var(--pink);font-weight:700}
+.diffs{margin:0;padding:0;list-style:none;display:grid;gap:11px}
+.diffs li{font-size:14px;color:var(--pink2);padding-left:17px;position:relative;line-height:1.5}
+.diffs li::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:1px;background:var(--pln2)}
+.diffs b{color:var(--pink);font-weight:700;display:block}
+
+/* palette cards */
+.pals{display:grid;grid-template-columns:repeat(auto-fit,minmax(272px,1fr));gap:26px;margin-top:28px}
+.palcard{display:flex;flex-direction:column;gap:12px}
+.palmeta{display:flex;align-items:baseline;gap:9px}
+.palmeta h3{margin:0;font-size:17px;font-weight:800;letter-spacing:-.018em}
+.palmode{font-family:var(--pmono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--pink3);border:1px solid var(--pln2);padding:2px 6px}
+.palnote{margin:0;font-size:13.5px;color:var(--pink2)}
+.chipsrow{display:flex;gap:3px;flex-wrap:wrap}
+.chipsrow i{width:26px;height:26px;border:1px solid rgba(0,0,0,.14);display:block}
+.chipsrow .lbl{font-family:var(--pmono);font-size:9.5px;color:var(--pink3);align-self:center;margin-right:5px;letter-spacing:.08em}
+
+.next{margin-top:64px;border:2px solid var(--pink);padding:22px 24px}
+.next h2{margin:0 0 6px;font-size:21px;font-weight:900;letter-spacing:-.02em}
+.next p{margin:0 0 16px;color:var(--pink2);font-size:14.5px;max-width:46rem}
+.pick{display:flex;gap:13px;align-items:baseline;padding:11px 0}
+.pick+.pick{border-top:1px solid var(--pln)}
+.pick .n{font-family:var(--pmono);font-size:11px;font-weight:600;color:var(--pink3);width:22px;flex:none}
+.pick b{display:block;font-size:14.5px;margin-bottom:2px}
+.pick span{font-size:13.5px;color:var(--pink2)}
+footer{margin-top:40px;font-family:var(--pmono);font-size:10.5px;color:var(--pink3);letter-spacing:.06em}
+
+/* ================= phone ================= */
+.ph{
+  width:286px;height:604px;flex:none;border-radius:30px;overflow:hidden;
+  background:var(--g);color:var(--tx);font-family:var(--fnt);
+  border:7px solid #0A0A0C;box-shadow:0 12px 32px rgba(0,0,0,.26);
+  display:flex;flex-direction:column;font-size:12.5px;line-height:1.5;
+}
+.ph .i{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.scr{display:flex;flex-direction:column;height:100%;background:var(--g);overflow:hidden}
+
+.appbar{display:flex;align-items:center;gap:9px;padding:13px 13px 11px;background:var(--s);flex:none}
+.appbar.back{gap:8px}
+.logo{width:24px;height:24px;border-radius:7px;background:var(--ac);flex:none;display:grid;place-items:center}
+.logo::after{content:'';width:9px;height:9px;border:1.7px solid var(--aci);border-bottom-color:transparent;border-radius:3px 3px 3px 0}
+.title{font-size:16px;font-weight:800;letter-spacing:-.02em;flex:1}
+.tabs{display:flex;border-radius:999px;background:var(--s2);padding:2px;flex:none;font-size:10px}
+.tabs b{background:var(--ac);color:var(--aci);border-radius:999px;padding:4px 9px;font-weight:700}
+.tabs i{color:var(--tx2);padding:4px 9px;font-style:normal}
+.bk{color:var(--tx2);flex:none;display:inline-flex}
+.ttl{display:flex;align-items:center;gap:7px;flex:1;min-width:0}
+.ttl .dot{width:8px;height:8px;border-radius:50%;background:var(--c);flex:none}
+.stk{display:flex;flex-direction:column;line-height:1.2;min-width:0}
+.stk b{font-size:15px;font-weight:800;letter-spacing:-.02em}
+.stk i{font-family:var(--pmono);font-size:9px;color:var(--tx2);font-style:normal}
+
+.rows{flex:1;overflow:hidden;background:var(--g)}
+.row{display:flex;gap:11px;align-items:center;padding:12px 14px}
+.av{width:40px;height:40px;flex:none;display:grid;place-items:center;font-size:15px;line-height:1;
+  border-radius:var(--avr);background:var(--c);color:#fff}
+.av.home .i{width:17px;height:17px}
+.rb{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.rt{display:flex;align-items:baseline;gap:8px}
+.rn{font-size:14.5px;font-weight:700;letter-spacing:-.012em;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rtime{font-family:var(--pmono);font-size:9.5px;color:var(--tx2);flex:none}
+.rp{display:flex;align-items:center;gap:6px}
+.rtx{flex:1;min-width:0;font-size:12px;color:var(--tx2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.flag{font-family:var(--pmono);font-size:9.5px;font-weight:600;color:var(--ur);flex:none}
+.badge{font-family:var(--pmono);font-size:9.5px;color:var(--tx2);background:var(--s2);
+  border-radius:999px;padding:1px 6px;flex:none;min-width:20px;text-align:center}
+.badge.hot{background:var(--ac);color:var(--aci);font-weight:700}
+
+.pin{background:var(--urbg);padding:8px 11px;flex:none}
+.pinhead{display:flex;align-items:center;font-family:var(--pmono);font-size:9px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ur);margin-bottom:6px}
+.pinhead .more{margin-left:auto;color:var(--tx2)}
+.pinrow{font-size:11.5px;font-weight:700;color:var(--ur);background:color-mix(in srgb,var(--ur) 12%,transparent);
+  border-left:2px solid var(--ur);padding:5px 8px;margin-bottom:4px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pinrow:last-child{margin-bottom:0}
+
+.thread{flex:1;overflow:hidden;padding:11px 12px;display:flex;flex-direction:column;gap:8px}
+.day{display:flex;align-items:center;gap:9px}
+.day::before,.day::after{content:'';height:1px;flex:1;background:color-mix(in srgb,var(--tx2) 28%,transparent)}
+.day span{font-family:var(--pmono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--tx2)}
+.ln{display:flex;flex-direction:column;gap:3px}
+.ln.right{align-items:flex-end}
+.ln.left{align-items:flex-start;padding-left:20px}
+.mt{font-family:var(--pmono);font-size:9px;color:var(--tx2);display:flex;gap:6px;align-items:center}
+.sch{font-style:normal;background:color-mix(in srgb,var(--ac) 20%,transparent);color:var(--ac);
+  border-radius:99px;padding:1px 6px;font-size:8.5px}
+.bub{max-width:82%;padding:8px 11px;background:var(--me);color:var(--mei);
+  border-radius:var(--rad) var(--tail) var(--rad) var(--rad);font-size:12.5px;line-height:1.5}
+.ln.left .bub{background:var(--rp);color:var(--tx);border-radius:var(--tail) var(--rad) var(--rad) var(--rad)}
+.bub .q{display:block;border-left:2px solid var(--ac);padding-left:7px;margin-bottom:5px;
+  font-size:10.5px;color:var(--tx2);font-style:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.dock{background:var(--s);padding:9px 11px 12px;flex:none}
+.dchips{display:flex;gap:4px;margin-bottom:8px}
+.ch{font-size:10px;padding:3px 9px;border-radius:999px;background:var(--s2);color:var(--tx2)}
+.ch.on{background:var(--c1);color:#fff;font-weight:700}
+.dbar{display:flex;align-items:center;gap:8px;background:var(--s2);padding:7px 7px 7px 12px}
+.dph{flex:1;color:var(--tx2);font-size:12px}
+.snd{width:28px;height:28px;background:var(--ac);color:var(--aci);display:grid;place-items:center;flex:none}
+.snd .i{width:13px;height:13px;stroke-width:1.9}
+
+/* ---------- direction 01 · Aurora ---------- */
+.aurora{
+  --g:#0F1116; --s:#171A21; --s2:#1E222B; --ln:transparent; --tx:#EDEFF4; --tx2:#8D95A3;
+  --ac:#6E6BFF; --aci:#0B0C12; --me:#3B3A96; --mei:#EEEEFF; --rp:#1E222B;
+  --ur:#FF7A7A; --urbg:#2A1A1F;
+  --c1:#7B78FF; --c2:#39C7A4; --c3:#F0A03C; --c4:#CB7DF0; --c5:#7D879B;
+  --rad:20px; --tail:7px; --avr:34%;
+  --fnt:'M PLUS Rounded 1c','Hiragino Maru Gothic ProN',system-ui,sans-serif;
+}
+.aurora .scr.convo{ background:
+  linear-gradient(color-mix(in srgb, var(--c) 7%, transparent), color-mix(in srgb, var(--c) 2%, transparent)), var(--g); }
+.aurora .row{ border:0; padding:11px 14px; }
+.aurora .av{ border-radius:var(--avr); background:color-mix(in srgb, var(--c) 22%, var(--s2));
+  color:var(--c); font-weight:800; }
+.aurora .av.home{ background:color-mix(in srgb, var(--ac) 22%, var(--s2)); color:var(--ac); }
+.aurora .dock{ background:transparent; border:0; padding:8px 12px 14px; }
+.aurora .dbar{ border-radius:999px; background:var(--s2); border:1px solid rgba(255,255,255,.07);
+  box-shadow:0 8px 24px rgba(0,0,0,.45); }
+.aurora .snd{ border-radius:50%; }
+.aurora .pin{ background:color-mix(in srgb, var(--ur) 10%, transparent); border:0; margin:8px 12px 0; border-radius:14px; }
+.aurora .pinrow{ border-radius:10px; }
+
+/* ---------- direction 02 · Kiosk ---------- */
+.kiosk{
+  --g:#0D0E10; --s:#141518; --s2:#1B1D21; --ln:#26282D; --tx:#F1F2F4; --tx2:#868A92;
+  --ac:#F5F5F7; --aci:#0D0E10; --me:#232529; --mei:#F1F2F4; --rp:#1B1D21;
+  --ur:#FF5C4D; --urbg:#241413;
+  --c1:#5B7CFA; --c2:#28B98F; --c3:#E0922C; --c4:#B96BE0; --c5:#727A87;
+  --rad:4px; --tail:4px; --avr:4px;
+  --fnt:'Zen Kaku Gothic New','Hiragino Kaku Gothic ProN',system-ui,sans-serif;
+}
+.kiosk .row{ border-bottom:1px solid var(--ln); padding:12px 14px; }
+.kiosk .av{ border-radius:var(--avr); background:var(--c); color:#0D0E10; font-weight:900; }
+.kiosk .av.home{ background:var(--ac); color:var(--aci); }
+.kiosk .rn{ font-weight:900; font-size:17px; letter-spacing:-.03em; }
+.kiosk .rtime{ font-size:9.5px; letter-spacing:.1em; text-transform:uppercase; }
+.kiosk .title,.kiosk .stk b{ font-weight:900; letter-spacing:-.03em; }
+.kiosk .dock{ border-top:1px solid var(--ln); }
+.kiosk .dbar{ border-radius:4px; }
+.kiosk .snd{ border-radius:3px; }
+.kiosk .ch{ border-radius:3px; }
+.kiosk .pin{ border-bottom:1px solid var(--ln); }
+.kiosk .pinrow{ border-radius:0 2px 2px 0; }
+
+/* ---------- direction 03 · Cocoon ---------- */
+.cocoon{
+  --g:#0A0C10; --s:#12151B; --s2:#1A1F27; --ln:transparent; --tx:#E7EBF1; --tx2:#828B99;
+  --ac:#4C8DFF; --aci:#061019; --me:#24476F; --mei:#E9F1FF; --rp:#1A1F27;
+  --ur:#FF6B6B; --urbg:#241A1E;
+  --c1:#4C8DFF; --c2:#38C7A8; --c3:#F0A33C; --c4:#C87BF0; --c5:#7C8698;
+  --rad:20px; --tail:6px; --avr:50%;
+  --fnt:'M PLUS 1','Hiragino Kaku Gothic ProN',system-ui,sans-serif;
+}
+.cocoon .rows{ padding:8px 10px; display:flex; flex-direction:column; gap:7px; }
+.cocoon .row{ background:var(--s2); border-radius:16px; border:0; padding:11px 12px;
+  box-shadow:0 3px 10px rgba(0,0,0,.4); }
+.cocoon .av{ border-radius:50%; background:transparent; color:var(--c);
+  border:2px solid var(--c); font-weight:700; }
+.cocoon .av.home{ border-color:var(--ac); color:var(--ac); }
+.cocoon .bub{ box-shadow:0 3px 10px rgba(0,0,0,.35); }
+.cocoon .dock{ background:var(--s2); border:0; border-radius:20px 20px 0 0;
+  box-shadow:0 -8px 26px rgba(0,0,0,.5); padding-top:6px; }
+.cocoon .dock::before{ content:''; display:block; width:34px; height:4px; border-radius:99px;
+  background:var(--tx2); opacity:.45; margin:0 auto 9px; }
+.cocoon .snd{ border-radius:50%; }
+.cocoon .pin{ margin:8px 10px 0; border-radius:14px; background:var(--s2);
+  box-shadow:0 3px 10px rgba(0,0,0,.4); border:0; }
+.cocoon .pinrow{ border-radius:10px; }
+.pal-graphite{
+  --g:#0E0F13; --s:#181A20; --s2:#20242C; --ln:rgba(255,255,255,.07); --tx:#E8EAF0; --tx2:#8D95A3;
+  --ac:#6E6BFF; --aci:#0B0C12; --me:#3B3A96; --mei:#EEEEFF; --rp:#20242C;
+  --ur:#FF6B6B; --urbg:#2A1A1F;
+  --c1:#7B78FF; --c2:#39C7A4; --c3:#F0A03C; --c4:#CB7DF0; --c5:#7D879B;
+}
+.pal-porcelain{
+  --g:#F4F5F7; --s:#FFFFFF; --s2:#EDEFF3; --ln:rgba(0,0,0,.09); --tx:#14161C; --tx2:#63676F;
+  --ac:#2B4FD9; --aci:#FFFFFF; --me:#DDE4FA; --mei:#16265E; --rp:#EDEFF3;
+  --ur:#C8372A; --urbg:#FBEAE8;
+  --c1:#2B4FD9; --c2:#0F7A68; --c3:#A65612; --c4:#7B3FA8; --c5:#6B7180;
+}
+.pal-obsidian{
+  --g:#0C100E; --s:#161B18; --s2:#1D241F; --ln:rgba(255,255,255,.07); --tx:#E6EBE8; --tx2:#8D95A3;
+  --ac:#3DBE92; --aci:#0B0C12; --me:#1E4A3C; --mei:#DFF3EB; --rp:#1D241F;
+  --ur:#E8735C; --urbg:#2A1A17;
+  --c1:#3DBE92; --c2:#5AA9E6; --c3:#D9A441; --c4:#B87FD9; --c5:#79857F;
+}
+.pal-bone{
+  --g:#F2F1EC; --s:#FBFAF7; --s2:#EAE8E1; --ln:rgba(0,0,0,.09); --tx:#191A17; --tx2:#63676F;
+  --ac:#8C2F39; --aci:#FFFFFF; --me:#EFE2E3; --mei:#4A1A20; --rp:#EAE8E1;
+  --ur:#B23A2E; --urbg:#F5E4E1;
+  --c1:#8C2F39; --c2:#3F6B52; --c3:#9A6B1E; --c4:#4A4A7C; --c5:#7A7A72;
+}
+.pal-slate{
+  --g:#1E2228; --s:#272C34; --s2:#30363F; --ln:rgba(255,255,255,.07); --tx:#E9ECF0; --tx2:#8D95A3;
+  --ac:#E8A33D; --aci:#0B0C12; --me:#4A3A22; --mei:#F5E6CE; --rp:#30363F;
+  --ur:#F0685E; --urbg:#3A2320;
+  --c1:#E8A33D; --c2:#5FC2A4; --c3:#7FA8E0; --c4:#C88BD4; --c5:#858E9A;
+}</style>
+<div class="wrap">
+<header class="mast">
+  <p class="eyebrow">Self · じぶんメモ — phone, round two</p>
+  <h1>The phone opens on a list of conversations.</h1>
+  <p class="lede">The navigation you asked for is already built and running: Notebook opens on your categories as a list of chats, tapping one pushes into it, and the urgent block holds to two rows until you expand it. What is still open is how it should <b>look</b>. Three directions below, then five palettes — <b>pick one direction and two palettes.</b></p>
+</header>
+<p class="partlbl">Part A</p>
+<h2 class="parthead">Three phone directions</h2>
+<p class="partnote">Same screens, same navigation, three different personalities. All shown in a neutral dark palette so you are judging shape and structure here, not colour — colour is Part B.</p>
+<section class="dirsec">
+  <div class="dirhead">
+    <span class="dirnum">01</span>
+    <h3 class="dirname">Aurora<small>room per conversation</small></h3>
+  </div>
+  <p class="thesis">Every conversation gets its own room: the screen takes a whisper of the category’s colour, so Work and Hobby never feel like the same place. Soft squircles, no dividers, and a composer that floats clear of the content instead of being welded to the bottom edge.</p>
+  <div class="dirbody">
+    <div class="phones">
+<div class="ph aurora">
+  <div class="scr list">
+    <div class="appbar">
+      <span class="logo"></span>
+      <span class="title">Notebook</span>
+      <span class="tabs"><b>Notebook</b><i>Memo</i></span>
+    </div>
+    <div class="rows">
+      <div class="row">
+        <span class="av home"><svg class="i" viewBox="0 0 16 16"><rect x="2.2" y="3.4" width="11.6" height="10.4" rx="1.4"/><path d="M2.2 6.6h11.6M5.4 2v2.6M10.6 2v2.6"/></svg></span>
+        <span class="rb">
+          <span class="rt"><span class="rn">Home</span><span class="rtime">Tue</span></span>
+          <span class="rp"><span class="rtx">Design review Thu 14:00 — bring the three layout options</span><span class="badge">2</span></span>
+        </span>
+      </div>
+      <div class="row" style="--c:var(--c1)">
+        <span class="av">W</span>
+        <span class="rb">
+          <span class="rt"><span class="rn">Work</span><span class="rtime">09:14</span></span>
+          <span class="rp"><span class="flag">⚑2</span><span class="rtx">Mori replied: vendor will re-issue. Nothing until Monday.</span><span class="badge">6</span></span>
+        </span>
+      </div>
+      <div class="row" style="--c:var(--c2)">
+        <span class="av">I</span>
+        <span class="rb">
+          <span class="rt"><span class="rn">Ideas</span><span class="rtime">Yest</span></span>
+          <span class="rp"><span class="rtx">A notes app where you don’t write, you send</span><span class="badge">8</span></span>
+        </span>
+      </div>
+      <div class="row" style="--c:var(--c3)">
+        <span class="av">C</span>
+        <span class="rb">
+          <span class="rt"><span class="rn">Chores</span><span class="rtime">Yest</span></span>
+          <span class="rp"><span class="rtx">Filter cartridge — the Toray one, not the generic</span><span class="badge">12</span></span>
+        </span>
+      </div>
+      <div class="row" style="--c:var(--c4)">
+        <span class="av">H</span>
+        <span class="rb">
+          <span class="rt"><span class="rn">Hobby</span><span class="rtime">Sat</span></span>
+          <span class="rp"><span class="rtx">Darkroom booked — drop the film off the day before</span><span class="badge">5</span></span>
+        </span>
+      </div>
+      <div class="row" style="--c:var(--c5)">
+        <span class="av">U</span>
+        <span class="rb">
+          <span class="rt"><span class="rn">Uncategorised</span><span class="rtime">23:40</span></span>
+          <span class="rp"><span class="rtx">Deal with this later</span><span class="badge hot">3</span></span>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="ph aurora">
+  <div class="scr convo" style="--c:var(--c1)">
+    <div class="appbar back">
+      <span class="bk"><svg class="i" viewBox="0 0 16 16"><path d="M10 3 5 8l5 5"/></svg></span>
+      <span class="ttl"><span class="dot"></span><span class="stk"><b>Work</b><i>6 notes</i></span></span>
+      <span class="tabs"><b>Notebook</b><i>Memo</i></span>
+    </div>
+
+    <div class="pin">
+      <div class="pinhead"><span>⚑ Urgent · 3</span><span class="more">2 more ⌄</span></div>
+      <div class="pinrow">Ship the Q3 handover doc before Friday standup</div>
+      <div class="pinrow">Call facilities — parking permit expires Tue</div>
+    </div>
+
+    <div class="thread">
+      <div class="day"><span>Today</span></div>
+      <div class="ln right"><span class="mt">09:12</span><span class="bub">Ask Mori about the vendor invoice — he said end of month</span></div>
+      <div class="ln left"><span class="mt">Added note · 11:47</span><span class="bub rep"><i class="q">Ask Mori about the vendor invoice…</i>Invoice ref INV-2291. Finance needs it by the 20th.</span></div>
+      <div class="ln right"><span class="mt"><em class="sch">▣ Scheduled</em> 13:30</span><span class="bub">Design review Thu 14:00 — bring the three layout options</span></div>
+      <div class="ln right"><span class="mt">15:02</span><span class="bub">Mori replied: vendor will re-issue. Nothing to do until Monday.</span></div>
+    </div>
+
+    <div class="dock">
+      <div class="dchips"><span class="ch on">Work</span><span class="ch">Ideas</span><span class="ch">Chores</span><span class="ch">+</span></div>
+      <div class="dbar"><span class="dph">Message yourself…</span><span class="snd"><svg class="i" viewBox="0 0 16 16"><path d="M2 8 14 2.5 9.4 14 7.7 9.1z"/><path d="m7.7 9.1 6.3-6.6"/></svg></span></div>
+    </div>
+  </div>
+</div>
+    </div>
+    <div>
+      <div class="spec"><h3>Typeface</h3><p>M PLUS Rounded 1c — geometric, softened, and one of the very few rounded faces that draws Japanese as well as Latin.</p></div>
+      <div class="spec"><h3>What makes it this one</h3>
+        <ul class="diffs">
+          <li><b>The screen is tinted, not the bubbles.</b>A 7% wash of the category colour behind everything. You know which conversation you are in before you read a word.</li>
+          <li><b>No dividers in the list.</b>Rows are separated by air and the avatar’s weight. Fewer lines, less noise, more thumb.</li>
+          <li><b>Floating composer.</b>A pill that hovers above the thread with the category chip inside it — changing category never leaves the keyboard.</li>
+          <li><b>Generous 20px bubbles.</b>Sized for a thumb first and a cursor never.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="dirsec">
+  <div class="dirhead">
+    <span class="dirnum">02</span>
+    <h3 class="dirname">Kiosk<small>typographic, dense, confident</small></h3>
+  </div>
+  <p class="thesis">The opposite bet: no softness at all. Big type, hairline rules, mono numerals in their own column, and colour used as solid blocks rather than tints. It reads as a precision instrument — the note app equivalent of a well-set timetable.</p>
+  <div class="dirbody">
+    <div class="phones">
+<div class="ph kiosk">
+  <div class="scr list">
+    <div class="appbar">
+      <span class="logo"></span>
+      <span class="title">Notebook</span>
+      <span class="tabs"><b>Notebook</b><i>Memo</i></span>
+    </div>
+    <div class="rows">
+      <div class="row">
+        <span class="av home"><svg class="i" viewBox="0 0 16 16"><rect x="2.2" y="3.4" width="11.6" height="10.4" rx="1.4"/><path d="M2.2 6.6h11.6M5.4 2v2.6M10.6 2v2.6"/></svg></span>
+        <span class="rb">
+          <span class="rt"><span class="rn">Home</span><span class="rtime">Tue</span></span>
+          <span class="rp"><span class="rtx">Design review Thu 14:00 — bring the three layout options</span><span class="badge">2</span></span>
+        </span>
+      </div>
+      <div class="row" style="--c:var(--c1)">
+        <span class="av">W</span>
+        <span class="rb">
+          <span class="rt"><span class="rn">Work</span><span class="rtime">09:14</span></span>
+          <span class="rp"><span class="flag">⚑2</span><span class="rtx">Mori replied: vendor will re-issue. Nothing until Monday.</span><span class="badge">6</span></span>
+        </span>
+      </div>
+      <div class="row" style="--c:var(--c2)">
+        <span class="av">I</span>
+        <span class="rb">
+          <span class="rt"><span class="rn">Ideas</span><span class="rtime">Yest</span></span>
+          <span class="rp"><span class="rtx">A notes app where you don’t write, you send</span><span class="badge">8</span></span>
+        </span>
+      </div>
+      <div class="row" style="--c:var(--c3)">
+        <span class="av">C</span>
+        <span class="rb">
+          <span class="rt"><span class="rn">Chores</span><span class="rtime">Yest</span></span>
+          <span class="rp"><span class="rtx">Filter cartridge — the Toray one, not the generic</span><span class="badge">12</span></span>
+        </span>
+      </div>
+      <div class="row" style="--c:var(--c4)">
+        <span class="av">H</span>
+        <span class="rb">
+          <span class="rt"><span class="rn">Hobby</span><span class="rtime">Sat</span></span>
+          <span class="rp"><span class="rtx">Darkroom booked — drop the film off the day before</span><span class="badge">5</span></span>
+        </span>
+      </div>
+      <div class="row" style="--c:var(--c5)">
+        <span class="av">U</span>
+        <span class="rb">
+          <span class="rt"><span class="rn">Uncategorised</span><span class="rtime">23:40</span></span>
+          <span class="rp"><span class="rtx">Deal with this later</span><span class="badge hot">3</span></span>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="ph kiosk">
+  <div class="scr convo" style="--c:var(--c1)">
+    <div class="appbar back">
+      <span class="bk"><svg class="i" viewBox="0 0 16 16"><path d="M10 3 5 8l5 5"/></svg></span>
+      <span class="ttl"><span class="dot"></span><span class="stk"><b>Work</b><i>6 notes</i></span></span>
+      <span class="tabs"><b>Notebook</b><i>Memo</i></span>
+    </div>
+
+    <div class="pin">
+      <div class="pinhead"><span>⚑ Urgent · 3</span><span class="more">2 more ⌄</span></div>
+      <div class="pinrow">Ship the Q3 handover doc before Friday standup</div>
+      <div class="pinrow">Call facilities — parking permit expires Tue</div>
+    </div>
+
+    <div class="thread">
+      <div class="day"><span>Today</span></div>
+      <div class="ln right"><span class="mt">09:12</span><span class="bub">Ask Mori about the vendor invoice — he said end of month</span></div>
+      <div class="ln left"><span class="mt">Added note · 11:47</span><span class="bub rep"><i class="q">Ask Mori about the vendor invoice…</i>Invoice ref INV-2291. Finance needs it by the 20th.</span></div>
+      <div class="ln right"><span class="mt"><em class="sch">▣ Scheduled</em> 13:30</span><span class="bub">Design review Thu 14:00 — bring the three layout options</span></div>
+      <div class="ln right"><span class="mt">15:02</span><span class="bub">Mori replied: vendor will re-issue. Nothing to do until Monday.</span></div>
+    </div>
+
+    <div class="dock">
+      <div class="dchips"><span class="ch on">Work</span><span class="ch">Ideas</span><span class="ch">Chores</span><span class="ch">+</span></div>
+      <div class="dbar"><span class="dph">Message yourself…</span><span class="snd"><svg class="i" viewBox="0 0 16 16"><path d="M2 8 14 2.5 9.4 14 7.7 9.1z"/><path d="m7.7 9.1 6.3-6.6"/></svg></span></div>
+    </div>
+  </div>
+</div>
+    </div>
+    <div>
+      <div class="spec"><h3>Typeface</h3><p>Zen Kaku Gothic New at 900 for names, 400 for text — a modern Japanese grotesque with genuinely usable heavy weights.</p></div>
+      <div class="spec"><h3>What makes it this one</h3>
+        <ul class="diffs">
+          <li><b>Type does the work.</b>Conversation names at 17px/800 with tight tracking; everything else recedes. No decoration is carrying the design.</li>
+          <li><b>Colour as a block, never a wash.</b>The avatar is a hard square of category colour. That is the only saturated thing on screen.</li>
+          <li><b>Timestamps in a fixed mono column.</b>They line up down the page, so scanning by time actually works.</li>
+          <li><b>4px corners, full-width composer.</b>Hard edges throughout. Nothing floats.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="dirsec">
+  <div class="dirhead">
+    <span class="dirnum">03</span>
+    <h3 class="dirname">Cocoon<small>layered, nocturnal, tactile</small></h3>
+  </div>
+  <p class="thesis">Built around depth. Conversations are cards that sit above the ground, the thread sits below them, and the composer is a sheet you pull up. Shadows and a single elevated surface do the separating, so there are almost no lines on screen at all.</p>
+  <div class="dirbody">
+    <div class="phones">
+<div class="ph cocoon">
+  <div class="scr list">
+    <div class="appbar">
+      <span class="logo"></span>
+      <span class="title">Notebook</span>
+      <span class="tabs"><b>Notebook</b><i>Memo</i></span>
+    </div>
+    <div class="rows">
+      <div class="row">
+        <span class="av home"><svg class="i" viewBox="0 0 16 16"><rect x="2.2" y="3.4" width="11.6" height="10.4" rx="1.4"/><path d="M2.2 6.6h11.6M5.4 2v2.6M10.6 2v2.6"/></svg></span>
+        <span class="rb">
+          <span class="rt"><span class="rn">Home</span><span class="rtime">Tue</span></span>
+          <span class="rp"><span class="rtx">Design review Thu 14:00 — bring the three layout options</span><span class="badge">2</span></span>
+        </span>
+      </div>
+      <div class="row" style="--c:var(--c1)">
+        <span class="av">W</span>
+        <span class="rb">
+          <span class="rt"><span class="rn">Work</span><span class="rtime">09:14</span></span>
+          <span class="rp"><span class="flag">⚑2</span><span class="rtx">Mori replied: vendor will re-issue. Nothing until Monday.</span><span class="badge">6</span></span>
+        </span>
+      </div>
+      <div class="row" style="--c:var(--c2)">
+        <span class="av">I</span>
+        <span class="rb">
+          <span class="rt"><span class="rn">Ideas</span><span class="rtime">Yest</span></span>
+          <span class="rp"><span class="rtx">A notes app where you don’t write, you send</span><span class="badge">8</span></span>
+        </span>
+      </div>
+      <div class="row" style="--c:var(--c3)">
+        <span class="av">C</span>
+        <span class="rb">
+          <span class="rt"><span class="rn">Chores</span><span class="rtime">Yest</span></span>
+          <span class="rp"><span class="rtx">Filter cartridge — the Toray one, not the generic</span><span class="badge">12</span></span>
+        </span>
+      </div>
+      <div class="row" style="--c:var(--c4)">
+        <span class="av">H</span>
+        <span class="rb">
+          <span class="rt"><span class="rn">Hobby</span><span class="rtime">Sat</span></span>
+          <span class="rp"><span class="rtx">Darkroom booked — drop the film off the day before</span><span class="badge">5</span></span>
+        </span>
+      </div>
+      <div class="row" style="--c:var(--c5)">
+        <span class="av">U</span>
+        <span class="rb">
+          <span class="rt"><span class="rn">Uncategorised</span><span class="rtime">23:40</span></span>
+          <span class="rp"><span class="rtx">Deal with this later</span><span class="badge hot">3</span></span>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="ph cocoon">
+  <div class="scr convo" style="--c:var(--c1)">
+    <div class="appbar back">
+      <span class="bk"><svg class="i" viewBox="0 0 16 16"><path d="M10 3 5 8l5 5"/></svg></span>
+      <span class="ttl"><span class="dot"></span><span class="stk"><b>Work</b><i>6 notes</i></span></span>
+      <span class="tabs"><b>Notebook</b><i>Memo</i></span>
+    </div>
+
+    <div class="pin">
+      <div class="pinhead"><span>⚑ Urgent · 3</span><span class="more">2 more ⌄</span></div>
+      <div class="pinrow">Ship the Q3 handover doc before Friday standup</div>
+      <div class="pinrow">Call facilities — parking permit expires Tue</div>
+    </div>
+
+    <div class="thread">
+      <div class="day"><span>Today</span></div>
+      <div class="ln right"><span class="mt">09:12</span><span class="bub">Ask Mori about the vendor invoice — he said end of month</span></div>
+      <div class="ln left"><span class="mt">Added note · 11:47</span><span class="bub rep"><i class="q">Ask Mori about the vendor invoice…</i>Invoice ref INV-2291. Finance needs it by the 20th.</span></div>
+      <div class="ln right"><span class="mt"><em class="sch">▣ Scheduled</em> 13:30</span><span class="bub">Design review Thu 14:00 — bring the three layout options</span></div>
+      <div class="ln right"><span class="mt">15:02</span><span class="bub">Mori replied: vendor will re-issue. Nothing to do until Monday.</span></div>
+    </div>
+
+    <div class="dock">
+      <div class="dchips"><span class="ch on">Work</span><span class="ch">Ideas</span><span class="ch">Chores</span><span class="ch">+</span></div>
+      <div class="dbar"><span class="dph">Message yourself…</span><span class="snd"><svg class="i" viewBox="0 0 16 16"><path d="M2 8 14 2.5 9.4 14 7.7 9.1z"/><path d="m7.7 9.1 6.3-6.6"/></svg></span></div>
+    </div>
+  </div>
+</div>
+    </div>
+    <div>
+      <div class="spec"><h3>Typeface</h3><p>M PLUS 1 — even stroke weights that hold up as light text on a dark ground, where most Japanese faces smear.</p></div>
+      <div class="spec"><h3>What makes it this one</h3>
+        <ul class="diffs">
+          <li><b>Rows are cards, not rows.</b>Each conversation floats with its own shadow and gap. Tapping one feels like picking it up.</li>
+          <li><b>A bottom sheet, not a bar.</b>The composer has a grabber and lifts over the thread when you write, the way a modern sheet behaves.</li>
+          <li><b>Ring avatars.</b>A circle outlined in the category colour rather than filled — quieter, and it survives on a dark ground.</li>
+          <li><b>No divider lines anywhere.</b>Elevation separates everything. The result is unusually calm for a screen this dense.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+<p class="partlbl">Part B</p>
+<h2 class="parthead">Five palettes — choose two</h2>
+<p class="partnote">Each one shown on the identical conversation screen so you can compare like with like. The five category hues matter more than the accent here: this app colour-codes everything, so a palette only works if five of its colours can share one screen without fighting. Shown on Aurora’s structure; any of them drops onto whichever direction you pick.</p>
+<div class="pals">
+  <div class="palcard">
+    <div class="ph aurora pal-graphite">
+  <div class="scr convo" style="--c:var(--c1)">
+    <div class="appbar back">
+      <span class="bk"><svg class="i" viewBox="0 0 16 16"><path d="M10 3 5 8l5 5"/></svg></span>
+      <span class="ttl"><span class="dot"></span><span class="stk"><b>Work</b><i>6 notes</i></span></span>
+      <span class="tabs"><b>Notebook</b><i>Memo</i></span>
+    </div>
+
+    <div class="pin">
+      <div class="pinhead"><span>⚑ Urgent · 3</span><span class="more">2 more ⌄</span></div>
+      <div class="pinrow">Ship the Q3 handover doc before Friday standup</div>
+      <div class="pinrow">Call facilities — parking permit expires Tue</div>
+    </div>
+
+    <div class="thread">
+      <div class="day"><span>Today</span></div>
+      <div class="ln right"><span class="mt">09:12</span><span class="bub">Ask Mori about the vendor invoice — he said end of month</span></div>
+      <div class="ln left"><span class="mt">Added note · 11:47</span><span class="bub rep"><i class="q">Ask Mori about the vendor invoice…</i>Invoice ref INV-2291. Finance needs it by the 20th.</span></div>
+      <div class="ln right"><span class="mt"><em class="sch">▣ Scheduled</em> 13:30</span><span class="bub">Design review Thu 14:00 — bring the three layout options</span></div>
+      <div class="ln right"><span class="mt">15:02</span><span class="bub">Mori replied: vendor will re-issue. Nothing to do until Monday.</span></div>
+    </div>
+
+    <div class="dock">
+      <div class="dchips"><span class="ch on">Work</span><span class="ch">Ideas</span><span class="ch">Chores</span><span class="ch">+</span></div>
+      <div class="dbar"><span class="dph">Message yourself…</span><span class="snd"><svg class="i" viewBox="0 0 16 16"><path d="M2 8 14 2.5 9.4 14 7.7 9.1z"/><path d="m7.7 9.1 6.3-6.6"/></svg></span></div>
+    </div>
+  </div>
+</div>
+    <div class="palmeta"><h3>Graphite &amp; Iris</h3><span class="palmode">Dark</span></div>
+    <p class="palnote">The software-tool register. Near-black with a blue-violet bias, one iris accent, and category hues kept just below full saturation so five of them can share a screen.</p>
+    <div class="chipsrow"><span class="lbl">BASE</span><i style="background:#0E0F13"></i><i style="background:#181A20"></i><i style="background:#6E6BFF"></i><i style="background:#E8EAF0"></i><i style="background:#FF6B6B"></i></div>
+    <div class="chipsrow"><span class="lbl">CATS</span><i style="background:#7B78FF"></i><i style="background:#39C7A4"></i><i style="background:#F0A03C"></i><i style="background:#CB7DF0"></i><i style="background:#7D879B"></i></div>
+  </div>
+  <div class="palcard">
+    <div class="ph aurora pal-porcelain">
+  <div class="scr convo" style="--c:var(--c1)">
+    <div class="appbar back">
+      <span class="bk"><svg class="i" viewBox="0 0 16 16"><path d="M10 3 5 8l5 5"/></svg></span>
+      <span class="ttl"><span class="dot"></span><span class="stk"><b>Work</b><i>6 notes</i></span></span>
+      <span class="tabs"><b>Notebook</b><i>Memo</i></span>
+    </div>
+
+    <div class="pin">
+      <div class="pinhead"><span>⚑ Urgent · 3</span><span class="more">2 more ⌄</span></div>
+      <div class="pinrow">Ship the Q3 handover doc before Friday standup</div>
+      <div class="pinrow">Call facilities — parking permit expires Tue</div>
+    </div>
+
+    <div class="thread">
+      <div class="day"><span>Today</span></div>
+      <div class="ln right"><span class="mt">09:12</span><span class="bub">Ask Mori about the vendor invoice — he said end of month</span></div>
+      <div class="ln left"><span class="mt">Added note · 11:47</span><span class="bub rep"><i class="q">Ask Mori about the vendor invoice…</i>Invoice ref INV-2291. Finance needs it by the 20th.</span></div>
+      <div class="ln right"><span class="mt"><em class="sch">▣ Scheduled</em> 13:30</span><span class="bub">Design review Thu 14:00 — bring the three layout options</span></div>
+      <div class="ln right"><span class="mt">15:02</span><span class="bub">Mori replied: vendor will re-issue. Nothing to do until Monday.</span></div>
+    </div>
+
+    <div class="dock">
+      <div class="dchips"><span class="ch on">Work</span><span class="ch">Ideas</span><span class="ch">Chores</span><span class="ch">+</span></div>
+      <div class="dbar"><span class="dph">Message yourself…</span><span class="snd"><svg class="i" viewBox="0 0 16 16"><path d="M2 8 14 2.5 9.4 14 7.7 9.1z"/><path d="m7.7 9.1 6.3-6.6"/></svg></span></div>
+    </div>
+  </div>
+</div>
+    <div class="palmeta"><h3>Porcelain &amp; Cobalt</h3><span class="palmode">Light</span></div>
+    <p class="palnote">The one that looks commissioned. A cool porcelain ground, warm-grey neutrals so it never goes clinical, and a deep cobalt that stays legible at 11px.</p>
+    <div class="chipsrow"><span class="lbl">BASE</span><i style="background:#F4F5F7"></i><i style="background:#FFFFFF"></i><i style="background:#2B4FD9"></i><i style="background:#14161C"></i><i style="background:#C8372A"></i></div>
+    <div class="chipsrow"><span class="lbl">CATS</span><i style="background:#2B4FD9"></i><i style="background:#0F7A68"></i><i style="background:#A65612"></i><i style="background:#7B3FA8"></i><i style="background:#6B7180"></i></div>
+  </div>
+  <div class="palcard">
+    <div class="ph aurora pal-obsidian">
+  <div class="scr convo" style="--c:var(--c1)">
+    <div class="appbar back">
+      <span class="bk"><svg class="i" viewBox="0 0 16 16"><path d="M10 3 5 8l5 5"/></svg></span>
+      <span class="ttl"><span class="dot"></span><span class="stk"><b>Work</b><i>6 notes</i></span></span>
+      <span class="tabs"><b>Notebook</b><i>Memo</i></span>
+    </div>
+
+    <div class="pin">
+      <div class="pinhead"><span>⚑ Urgent · 3</span><span class="more">2 more ⌄</span></div>
+      <div class="pinrow">Ship the Q3 handover doc before Friday standup</div>
+      <div class="pinrow">Call facilities — parking permit expires Tue</div>
+    </div>
+
+    <div class="thread">
+      <div class="day"><span>Today</span></div>
+      <div class="ln right"><span class="mt">09:12</span><span class="bub">Ask Mori about the vendor invoice — he said end of month</span></div>
+      <div class="ln left"><span class="mt">Added note · 11:47</span><span class="bub rep"><i class="q">Ask Mori about the vendor invoice…</i>Invoice ref INV-2291. Finance needs it by the 20th.</span></div>
+      <div class="ln right"><span class="mt"><em class="sch">▣ Scheduled</em> 13:30</span><span class="bub">Design review Thu 14:00 — bring the three layout options</span></div>
+      <div class="ln right"><span class="mt">15:02</span><span class="bub">Mori replied: vendor will re-issue. Nothing to do until Monday.</span></div>
+    </div>
+
+    <div class="dock">
+      <div class="dchips"><span class="ch on">Work</span><span class="ch">Ideas</span><span class="ch">Chores</span><span class="ch">+</span></div>
+      <div class="dbar"><span class="dph">Message yourself…</span><span class="snd"><svg class="i" viewBox="0 0 16 16"><path d="M2 8 14 2.5 9.4 14 7.7 9.1z"/><path d="m7.7 9.1 6.3-6.6"/></svg></span></div>
+    </div>
+  </div>
+</div>
+    <div class="palmeta"><h3>Obsidian &amp; Jade</h3><span class="palmode">Dark</span></div>
+    <p class="palnote">Calmer and more expensive-feeling than Graphite. Green-biased blacks, a jade accent, and a copper secondary that only appears on scheduled notes.</p>
+    <div class="chipsrow"><span class="lbl">BASE</span><i style="background:#0C100E"></i><i style="background:#161B18"></i><i style="background:#3DBE92"></i><i style="background:#E6EBE8"></i><i style="background:#E8735C"></i></div>
+    <div class="chipsrow"><span class="lbl">CATS</span><i style="background:#3DBE92"></i><i style="background:#5AA9E6"></i><i style="background:#D9A441"></i><i style="background:#B87FD9"></i><i style="background:#79857F"></i></div>
+  </div>
+  <div class="palcard">
+    <div class="ph aurora pal-bone">
+  <div class="scr convo" style="--c:var(--c1)">
+    <div class="appbar back">
+      <span class="bk"><svg class="i" viewBox="0 0 16 16"><path d="M10 3 5 8l5 5"/></svg></span>
+      <span class="ttl"><span class="dot"></span><span class="stk"><b>Work</b><i>6 notes</i></span></span>
+      <span class="tabs"><b>Notebook</b><i>Memo</i></span>
+    </div>
+
+    <div class="pin">
+      <div class="pinhead"><span>⚑ Urgent · 3</span><span class="more">2 more ⌄</span></div>
+      <div class="pinrow">Ship the Q3 handover doc before Friday standup</div>
+      <div class="pinrow">Call facilities — parking permit expires Tue</div>
+    </div>
+
+    <div class="thread">
+      <div class="day"><span>Today</span></div>
+      <div class="ln right"><span class="mt">09:12</span><span class="bub">Ask Mori about the vendor invoice — he said end of month</span></div>
+      <div class="ln left"><span class="mt">Added note · 11:47</span><span class="bub rep"><i class="q">Ask Mori about the vendor invoice…</i>Invoice ref INV-2291. Finance needs it by the 20th.</span></div>
+      <div class="ln right"><span class="mt"><em class="sch">▣ Scheduled</em> 13:30</span><span class="bub">Design review Thu 14:00 — bring the three layout options</span></div>
+      <div class="ln right"><span class="mt">15:02</span><span class="bub">Mori replied: vendor will re-issue. Nothing to do until Monday.</span></div>
+    </div>
+
+    <div class="dock">
+      <div class="dchips"><span class="ch on">Work</span><span class="ch">Ideas</span><span class="ch">Chores</span><span class="ch">+</span></div>
+      <div class="dbar"><span class="dph">Message yourself…</span><span class="snd"><svg class="i" viewBox="0 0 16 16"><path d="M2 8 14 2.5 9.4 14 7.7 9.1z"/><path d="m7.7 9.1 6.3-6.6"/></svg></span></div>
+    </div>
+  </div>
+</div>
+    <div class="palmeta"><h3>Bone &amp; Oxblood</h3><span class="palmode">Light</span></div>
+    <p class="palnote">Editorial. A cool bone ground with a true ink black and a single oxblood accent. Warmer than Porcelain without drifting into the beige that every app is currently wearing.</p>
+    <div class="chipsrow"><span class="lbl">BASE</span><i style="background:#F2F1EC"></i><i style="background:#FBFAF7"></i><i style="background:#8C2F39"></i><i style="background:#191A17"></i><i style="background:#B23A2E"></i></div>
+    <div class="chipsrow"><span class="lbl">CATS</span><i style="background:#8C2F39"></i><i style="background:#3F6B52"></i><i style="background:#9A6B1E"></i><i style="background:#4A4A7C"></i><i style="background:#7A7A72"></i></div>
+  </div>
+  <div class="palcard">
+    <div class="ph aurora pal-slate">
+  <div class="scr convo" style="--c:var(--c1)">
+    <div class="appbar back">
+      <span class="bk"><svg class="i" viewBox="0 0 16 16"><path d="M10 3 5 8l5 5"/></svg></span>
+      <span class="ttl"><span class="dot"></span><span class="stk"><b>Work</b><i>6 notes</i></span></span>
+      <span class="tabs"><b>Notebook</b><i>Memo</i></span>
+    </div>
+
+    <div class="pin">
+      <div class="pinhead"><span>⚑ Urgent · 3</span><span class="more">2 more ⌄</span></div>
+      <div class="pinrow">Ship the Q3 handover doc before Friday standup</div>
+      <div class="pinrow">Call facilities — parking permit expires Tue</div>
+    </div>
+
+    <div class="thread">
+      <div class="day"><span>Today</span></div>
+      <div class="ln right"><span class="mt">09:12</span><span class="bub">Ask Mori about the vendor invoice — he said end of month</span></div>
+      <div class="ln left"><span class="mt">Added note · 11:47</span><span class="bub rep"><i class="q">Ask Mori about the vendor invoice…</i>Invoice ref INV-2291. Finance needs it by the 20th.</span></div>
+      <div class="ln right"><span class="mt"><em class="sch">▣ Scheduled</em> 13:30</span><span class="bub">Design review Thu 14:00 — bring the three layout options</span></div>
+      <div class="ln right"><span class="mt">15:02</span><span class="bub">Mori replied: vendor will re-issue. Nothing to do until Monday.</span></div>
+    </div>
+
+    <div class="dock">
+      <div class="dchips"><span class="ch on">Work</span><span class="ch">Ideas</span><span class="ch">Chores</span><span class="ch">+</span></div>
+      <div class="dbar"><span class="dph">Message yourself…</span><span class="snd"><svg class="i" viewBox="0 0 16 16"><path d="M2 8 14 2.5 9.4 14 7.7 9.1z"/><path d="m7.7 9.1 6.3-6.6"/></svg></span></div>
+    </div>
+  </div>
+</div>
+    <div class="palmeta"><h3>Slate &amp; Amber</h3><span class="palmode">Dim</span></div>
+    <p class="palnote">Neither light nor black — a mid-dark slate that is easy on the eyes at both 9am and midnight, with a warm amber accent. The most distinctive of the five, and the least like anything else on a phone.</p>
+    <div class="chipsrow"><span class="lbl">BASE</span><i style="background:#1E2228"></i><i style="background:#272C34"></i><i style="background:#E8A33D"></i><i style="background:#E9ECF0"></i><i style="background:#F0685E"></i></div>
+    <div class="chipsrow"><span class="lbl">CATS</span><i style="background:#E8A33D"></i><i style="background:#5FC2A4"></i><i style="background:#7FA8E0"></i><i style="background:#C88BD4"></i><i style="background:#858E9A"></i></div>
+  </div>
+</div>
+<section class="next">
+  <h2>What I need back</h2>
+  <p>Two answers and the phone is finished. Everything else on the app is already built and tested.</p>
+  <div class="pick"><span class="n">01</span><span><b>One direction — Aurora, Kiosk or Cocoon</b><span>Or a hybrid; “Kiosk’s list with Cocoon’s composer” is a perfectly good answer.</span></span></div>
+  <div class="pick"><span class="n">02</span><span><b>Two palettes</b><span>They become the app’s two selectable themes, replacing Desk and Yakan. Pick one light and one dark if you want the “follow system” switch to keep working properly.</span></span></div>
+</section>
+<footer>Self / じぶんメモ · phone round two · 15 September 2026</footer>
+</div>

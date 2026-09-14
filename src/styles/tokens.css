@@ -1,0 +1,246 @@
+/*
+ * One shape language, five palettes.
+ *
+ * Shape, radius and typeface are shared by every theme and live in :root.
+ * A palette redefines colour only — which is why five of them cost almost
+ * nothing and why adding a sixth is a paste job, not a project.
+ *
+ * data-skin is stamped on <html> by App.tsx. "system" is resolved to a real
+ * palette before it reaches the DOM, so no component ever sees it.
+ */
+
+:root {
+  /* ---- shape & type: identical in every palette (Cocoon) ---- */
+  --radius: 20px;
+  --tail: 6px;
+  --radius-ui: 12px;
+  --font: 'M PLUS 1', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', system-ui, sans-serif;
+  --note-font: var(--font);
+  --mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* ============ Slate & Amber — the default ============ */
+:root,
+html[data-skin='slate'] {
+  --bg: #1e2228;
+  --head-bg: #272c34;
+  --chat-bg: #272c34;
+  --comp-bg: #272c34;
+  --input-bg: #30363f;
+  --pin-bg: #272c34;
+  --pin-item: #3a2320;
+  --cell: #272c34;
+  --cell-hover: #333a44;
+  --chip-bg: #30363f;
+  --menu-bg: #30363f;
+
+  --rail: #171a1f;
+  --rail-fg: #99a2ae;
+  --rail-hi: #f2f5f9;
+  --rail-on: #2a303a;
+
+  --line: #343a44;
+  --line-strong: #454c58;
+
+  --ink: #e9ecf0;
+  --ink-soft: #9aa3af;
+
+  --accent: #e8a33d;
+  --accent-ink: #1a1206;
+
+  --me: #4a3a22;
+  --me-ink: #f7e9d2;
+  --reply: #30363f;
+  --reply-border: 1px solid transparent;
+  --bub-border: 1px solid transparent;
+  --chip-on-ink: #1a1206;
+
+  --urgent: #f0685e;
+  --urgent-bg: #3a2320;
+  --sched-bg: #23352f;
+  --sched-ink: #5fc2a4;
+
+  --shadow: 0 8px 26px rgba(0, 0, 0, 0.5);
+  --scrim: rgba(0, 0, 0, 0.58);
+  color-scheme: dark;
+}
+
+/* ============ Graphite & Iris ============ */
+html[data-skin='graphite'] {
+  --bg: #0e0f13;
+  --head-bg: #181a20;
+  --chat-bg: #181a20;
+  --comp-bg: #181a20;
+  --input-bg: #20242c;
+  --pin-bg: #181a20;
+  --pin-item: #2a1a1f;
+  --cell: #181a20;
+  --cell-hover: #23262f;
+  --chip-bg: #20242c;
+  --menu-bg: #20242c;
+
+  --rail: #08090c;
+  --rail-fg: #8d95a3;
+  --rail-hi: #f2f4f8;
+  --rail-on: #1c1f27;
+
+  --line: #262933;
+  --line-strong: #363a46;
+
+  --ink: #e8eaf0;
+  --ink-soft: #8d95a3;
+
+  --accent: #6e6bff;
+  --accent-ink: #0b0c12;
+
+  --me: #3b3a96;
+  --me-ink: #eeeeff;
+  --reply: #20242c;
+  --reply-border: 1px solid transparent;
+  --bub-border: 1px solid transparent;
+  --chip-on-ink: #0b0c12;
+
+  --urgent: #ff6b6b;
+  --urgent-bg: #2a1a1f;
+  --sched-bg: #16302a;
+  --sched-ink: #39c7a4;
+
+  --shadow: 0 8px 26px rgba(0, 0, 0, 0.62);
+  --scrim: rgba(0, 0, 0, 0.64);
+  color-scheme: dark;
+}
+
+/* ============ Obsidian & Jade ============ */
+html[data-skin='obsidian'] {
+  --bg: #0c100e;
+  --head-bg: #161b18;
+  --chat-bg: #161b18;
+  --comp-bg: #161b18;
+  --input-bg: #1d241f;
+  --pin-bg: #161b18;
+  --pin-item: #2a1a17;
+  --cell: #161b18;
+  --cell-hover: #212a24;
+  --chip-bg: #1d241f;
+  --menu-bg: #1d241f;
+
+  --rail: #070a08;
+  --rail-fg: #869189;
+  --rail-hi: #eff4f1;
+  --rail-on: #1b231e;
+
+  --line: #232b26;
+  --line-strong: #333d37;
+
+  --ink: #e6ebe8;
+  --ink-soft: #869189;
+
+  --accent: #3dbe92;
+  --accent-ink: #051009;
+
+  --me: #1e4a3c;
+  --me-ink: #dff3eb;
+  --reply: #1d241f;
+  --reply-border: 1px solid transparent;
+  --bub-border: 1px solid transparent;
+  --chip-on-ink: #051009;
+
+  --urgent: #e8735c;
+  --urgent-bg: #2a1a17;
+  --sched-bg: #2a2416;
+  --sched-ink: #d9a441;
+
+  --shadow: 0 8px 26px rgba(0, 0, 0, 0.6);
+  --scrim: rgba(0, 0, 0, 0.62);
+  color-scheme: dark;
+}
+
+/* ============ Porcelain & Cobalt ============ */
+html[data-skin='porcelain'] {
+  --bg: #f4f5f7;
+  --head-bg: #ffffff;
+  --chat-bg: #ffffff;
+  --comp-bg: #ffffff;
+  --input-bg: #f0f2f6;
+  --pin-bg: #ffffff;
+  --pin-item: #fbeae8;
+  --cell: #ffffff;
+  --cell-hover: #eef0f4;
+  --chip-bg: #f0f2f6;
+  --menu-bg: #ffffff;
+
+  --rail: #1b1f2b;
+  --rail-fg: #a9b0c0;
+  --rail-hi: #ffffff;
+  --rail-on: #2a3040;
+
+  --line: #dee1e7;
+  --line-strong: #c6cad3;
+
+  --ink: #14161c;
+  --ink-soft: #63676f;
+
+  --accent: #2b4fd9;
+  --accent-ink: #ffffff;
+
+  --me: #dde4fa;
+  --me-ink: #16265e;
+  --reply: #ffffff;
+  --reply-border: 1px solid #e3e6eb;
+  --bub-border: 1px solid transparent;
+  --chip-on-ink: #ffffff;
+
+  --urgent: #c8372a;
+  --urgent-bg: #fbeae8;
+  --sched-bg: #e0f0ec;
+  --sched-ink: #0f7a68;
+
+  --shadow: 0 8px 26px rgba(20, 22, 28, 0.16);
+  --scrim: rgba(20, 22, 28, 0.4);
+  color-scheme: light;
+}
+
+/* ============ Bone & Oxblood ============ */
+html[data-skin='bone'] {
+  --bg: #f2f1ec;
+  --head-bg: #fbfaf7;
+  --chat-bg: #fbfaf7;
+  --comp-bg: #fbfaf7;
+  --input-bg: #efede6;
+  --pin-bg: #fbfaf7;
+  --pin-item: #f5e4e1;
+  --cell: #fbfaf7;
+  --cell-hover: #eceae2;
+  --chip-bg: #efede6;
+  --menu-bg: #fbfaf7;
+
+  --rail: #2a2722;
+  --rail-fg: #b3ada2;
+  --rail-hi: #fbfaf7;
+  --rail-on: #3a362f;
+
+  --line: #dcdad1;
+  --line-strong: #c4c1b6;
+
+  --ink: #191a17;
+  --ink-soft: #6b6c64;
+
+  --accent: #8c2f39;
+  --accent-ink: #fbfaf7;
+
+  --me: #efe2e3;
+  --me-ink: #4a1a20;
+  --reply: #fbfaf7;
+  --reply-border: 1px solid #e2dfd6;
+  --bub-border: 1px solid transparent;
+  --chip-on-ink: #fbfaf7;
+
+  --urgent: #b23a2e;
+  --urgent-bg: #f5e4e1;
+  --sched-bg: #e3eadf;
+  --sched-ink: #3f6b52;
+
+  --shadow: 0 8px 26px rgba(25, 26, 23, 0.16);
+  --scrim: rgba(25, 26, 23, 0.4);
+  color-scheme: light;
+}

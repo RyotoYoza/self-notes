@@ -1,0 +1,979 @@
+<title>Self-Chat Visual Directions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=M+PLUS+1:wght@400;500;700&family=Shippori+Mincho+B1:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap">
+
+<style>
+/* ============ page shell tokens — deliberately achromatic so every
+   colour on this page belongs to one of the three proposals ============ */
+:root{
+  --p-bg:#EDEDEA;
+  --p-bg-2:#F7F7F5;
+  --p-ink:#17181A;
+  --p-ink-2:#53565C;
+  --p-ink-3:#83878E;
+  --p-line:#D6D6D2;
+  --p-line-2:#C2C2BD;
+  --p-mark:#1B1C1E;
+  --p-mark-ink:#F7F7F5;
+  --p-focus:#2C6BE0;
+  --p-sans:"Zen Kaku Gothic New","Hiragino Kaku Gothic ProN",system-ui,sans-serif;
+  --p-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --p-bg:#141517;
+    --p-bg-2:#1C1E21;
+    --p-ink:#EDEDEA;
+    --p-ink-2:#A8ACB2;
+    --p-ink-3:#7B7F86;
+    --p-line:#2C2F33;
+    --p-line-2:#3A3E44;
+    --p-mark:#EDEDEA;
+    --p-mark-ink:#141517;
+    --p-focus:#6FA0F5;
+  }
+}
+:root[data-theme="dark"]{
+  --p-bg:#141517;
+  --p-bg-2:#1C1E21;
+  --p-ink:#EDEDEA;
+  --p-ink-2:#A8ACB2;
+  --p-ink-3:#7B7F86;
+  --p-line:#2C2F33;
+  --p-line-2:#3A3E44;
+  --p-mark:#EDEDEA;
+  --p-mark-ink:#141517;
+  --p-focus:#6FA0F5;
+}
+
+*{box-sizing:border-box}
+body{
+  background:var(--p-bg);
+  color:var(--p-ink);
+  font-family:var(--p-sans);
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{
+  max-width:1180px;
+  margin:0 auto;
+  padding-inline:20px;
+  padding-block:0 80px;
+}
+:focus-visible{outline:2px solid var(--p-focus);outline-offset:2px;border-radius:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ---------- masthead ---------- */
+.mast{
+  padding-block:52px 30px;
+  border-bottom:1px solid var(--p-line);
+  display:flex;
+  flex-wrap:wrap;
+  gap:28px 40px;
+  align-items:flex-end;
+  justify-content:space-between;
+}
+.mast-l{max-width:38rem}
+.eyebrow{
+  font-family:var(--p-mono);
+  font-size:11px;
+  font-weight:500;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--p-ink-3);
+  margin:0 0 14px;
+}
+h1{
+  font-size:clamp(30px,4.4vw,46px);
+  line-height:1.08;
+  font-weight:900;
+  letter-spacing:-.022em;
+  margin:0 0 16px;
+  text-wrap:balance;
+}
+.lede{margin:0;color:var(--p-ink-2);font-size:16px;max-width:34rem}
+.lede b{color:var(--p-ink);font-weight:700}
+
+.langbox{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.langbox .cap{font-family:var(--p-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--p-ink-3)}
+.seg{display:inline-flex;border:1px solid var(--p-line-2);border-radius:2px;overflow:hidden;background:var(--p-bg-2)}
+.seg button{
+  font:500 12px/1 var(--p-mono);
+  letter-spacing:.08em;
+  padding:9px 16px;
+  border:0;
+  background:transparent;
+  color:var(--p-ink-2);
+  cursor:pointer;
+}
+.seg button + button{border-left:1px solid var(--p-line-2)}
+.seg button[aria-pressed="true"]{background:var(--p-mark);color:var(--p-mark-ink)}
+
+/* ---------- fixed contract strip ---------- */
+.contract{
+  margin-block:30px 0;
+  border:1px solid var(--p-line);
+  background:var(--p-bg-2);
+  padding:20px 22px;
+  display:grid;
+  gap:18px 30px;
+  grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+}
+.contract h2{
+  grid-column:1/-1;
+  margin:0;
+  font-family:var(--p-mono);
+  font-size:11px;
+  font-weight:500;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--p-ink-3);
+}
+.contract dl{margin:0}
+.contract dt{font-size:13px;font-weight:700;margin:0 0 3px}
+.contract dd{margin:0;font-size:13px;line-height:1.5;color:var(--p-ink-2)}
+
+/* ---------- direction section ---------- */
+.dirsec{padding-block:64px 0}
+.dirsec + .dirsec{border-top:1px solid var(--p-line);margin-top:64px}
+.dirhead{display:flex;flex-wrap:wrap;gap:10px 26px;align-items:baseline;margin-bottom:6px}
+.dirnum{font-family:var(--p-mono);font-size:12px;font-weight:600;letter-spacing:.1em;color:var(--p-ink-3)}
+.dirname{font-size:28px;font-weight:900;letter-spacing:-.02em;margin:0}
+.dirname small{display:block;font-size:12px;font-weight:500;letter-spacing:.04em;color:var(--p-ink-3);margin-top:2px}
+.thesis{margin:0 0 26px;max-width:44rem;color:var(--p-ink-2);font-size:15px}
+
+.shot{
+  overflow-x:auto;
+  border:1px solid var(--p-line-2);
+  background:var(--p-bg-2);
+  padding:14px;
+}
+.shotcap{
+  font-family:var(--p-mono);
+  font-size:10.5px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--p-ink-3);
+  margin:10px 0 0;
+}
+.underrow{
+  display:grid;
+  gap:28px;
+  grid-template-columns:270px minmax(0,1fr);
+  align-items:start;
+  margin-top:28px;
+}
+@media (max-width:760px){.underrow{grid-template-columns:1fr}}
+
+.spec h3{
+  font-family:var(--p-mono);
+  font-size:10.5px;
+  font-weight:500;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--p-ink-3);
+  margin:0 0 10px;
+}
+.spec + .spec{margin-top:26px}
+.swatches{display:flex;flex-wrap:wrap;gap:2px}
+.sw{width:60px}
+.sw i{display:block;height:44px;border:1px solid rgba(0,0,0,.14)}
+.sw span{display:block;font-family:var(--p-mono);font-size:9.5px;color:var(--p-ink-3);padding-top:4px;letter-spacing:.02em}
+.typerow{font-size:14px;color:var(--p-ink-2);margin:0}
+.typerow b{color:var(--p-ink);font-weight:700}
+.diffs{margin:0;padding:0;list-style:none;display:grid;gap:9px}
+.diffs li{font-size:14px;color:var(--p-ink-2);padding-left:17px;position:relative;line-height:1.5}
+.diffs li::before{content:"";position:absolute;left:0;top:.62em;width:7px;height:1px;background:var(--p-line-2)}
+.diffs b{color:var(--p-ink);font-weight:700}
+
+/* ============================================================
+   MOCKUP ENGINE — one skeleton, three themed skins
+   ============================================================ */
+.mock{
+  --m-radius:8px;
+  --m-tail:2px;
+  min-width:860px;
+  display:grid;
+  grid-template-columns:172px minmax(0,1fr) 312px;
+  height:520px;
+  background:var(--m-bg);
+  color:var(--m-ink);
+  font-family:var(--m-font);
+  font-size:12.5px;
+  line-height:1.5;
+  overflow:hidden;
+  border:1px solid var(--m-line);
+}
+.mock *{min-width:0}
+.ic{width:14px;height:14px;flex:none;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+
+/* rail */
+.m-rail{background:var(--m-rail);color:var(--m-rail-fg);display:flex;flex-direction:column;padding:12px 0}
+.m-brand{display:flex;align-items:center;gap:8px;padding:2px 13px 16px;font-weight:700;font-size:13px;color:var(--m-rail-hi);letter-spacing:-.01em}
+.m-brand i{width:20px;height:20px;border-radius:5px;background:var(--m-accent);display:grid;place-items:center;flex:none}
+.m-brand i::after{content:"";width:8px;height:8px;border:1.6px solid var(--m-accent-ink);border-bottom-color:transparent;border-radius:3px 3px 3px 0}
+.m-navlbl{font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;opacity:.5;padding:0 13px;margin:12px 0 6px;font-family:var(--m-mono)}
+.m-nav{display:flex;flex-direction:column;gap:1px;padding:0 6px}
+.m-item{display:flex;align-items:center;gap:8px;padding:6px 7px;border-radius:4px;font-size:12.5px;color:inherit}
+.m-item .dot{width:7px;height:7px;border-radius:50%;flex:none;background:var(--c)}
+.m-item .nm{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.m-item .ct{font-family:var(--m-mono);font-size:10.5px;opacity:.55;font-variant-numeric:tabular-nums}
+.m-item.on{background:var(--m-rail-on);color:var(--m-rail-hi);font-weight:600}
+.m-rail-foot{margin-top:auto;padding:0 6px}
+
+/* main column */
+.m-main{display:flex;flex-direction:column;background:var(--m-bg);border-inline:1px solid var(--m-line)}
+.m-head{display:flex;align-items:center;gap:10px;padding:11px 16px;border-bottom:1px solid var(--m-line);background:var(--m-head-bg)}
+.m-head .ttl{font-weight:700;font-size:15px;letter-spacing:-.01em;display:flex;align-items:center;gap:8px}
+.m-head .ttl .dot{width:9px;height:9px;border-radius:50%;background:var(--c)}
+.m-head .sub{font-family:var(--m-mono);font-size:10.5px;color:var(--m-ink-soft)}
+.m-views{margin-left:auto;display:flex;border:1px solid var(--m-line);border-radius:4px;overflow:hidden}
+.m-views span{padding:4px 10px;font-size:11px;color:var(--m-ink-soft)}
+.m-views span + span{border-left:1px solid var(--m-line)}
+.m-views span.on{background:var(--m-chip-on);color:var(--m-chip-on-ink);font-weight:600}
+
+/* pinned urgent block — top quarter of a category page */
+.m-pinned{padding:11px 16px;background:var(--m-pin-bg);border-bottom:1px solid var(--m-line)}
+.m-pinhead{display:flex;align-items:center;gap:7px;font-family:var(--m-mono);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--m-urgent);margin-bottom:8px}
+.m-pinhead .ic{width:12px;height:12px;stroke-width:1.8}
+.m-pinlist{display:grid;gap:5px}
+.m-pin{display:flex;gap:9px;align-items:baseline;padding:6px 9px;background:var(--m-pin-item);border-left:2px solid var(--m-urgent);border-radius:0 var(--m-tail) var(--m-tail) 0}
+.m-pin .tx{flex:1;font-weight:700;color:var(--m-urgent);font-size:12px}
+.m-pin .tm{font-family:var(--m-mono);font-size:10px;color:var(--m-ink-soft);font-variant-numeric:tabular-nums}
+
+/* thread */
+.m-thread{flex:1;overflow:hidden;padding:14px 16px;display:flex;flex-direction:column;gap:9px;background:var(--m-thread-bg)}
+.m-day{display:flex;align-items:center;gap:10px;margin:2px 0}
+.m-day::before,.m-day::after{content:"";height:1px;background:var(--m-line);flex:1}
+.m-day span{font-family:var(--m-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--m-ink-soft)}
+.m-row{display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+.m-row.left{align-items:flex-start;padding-left:26px}
+.m-meta{display:flex;gap:7px;align-items:center;font-family:var(--m-mono);font-size:9.5px;color:var(--m-ink-soft);font-variant-numeric:tabular-nums}
+.m-bub{
+  max-width:74%;
+  padding:7px 11px;
+  background:var(--m-me);
+  color:var(--m-me-ink);
+  border:var(--m-bub-border);
+  border-radius:var(--m-radius) var(--m-tail) var(--m-radius) var(--m-radius);
+  font-size:12.5px;
+  line-height:1.52;
+  font-family:var(--m-note-font);
+}
+.m-row.left .m-bub{
+  background:var(--m-reply);
+  color:var(--m-ink);
+  border-radius:var(--m-tail) var(--m-radius) var(--m-radius) var(--m-radius);
+}
+.m-bub.urgent{background:var(--m-urgent-bg);color:var(--m-urgent);font-weight:700;border:1px solid var(--m-urgent)}
+.m-quote{
+  display:block;
+  border-left:2px solid var(--m-accent);
+  padding:1px 0 1px 8px;
+  margin-bottom:5px;
+  font-size:11px;
+  color:var(--m-ink-soft);
+  font-family:var(--m-font);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.m-cat{display:inline-flex;align-items:center;gap:5px;font-family:var(--m-mono);font-size:9.5px;color:var(--m-ink-soft)}
+.m-cat .dot{width:6px;height:6px;border-radius:50%;background:var(--c)}
+.m-sched{display:inline-flex;align-items:center;gap:4px;padding:1px 6px;border-radius:99px;background:var(--m-sched-bg);color:var(--m-sched-ink);font-family:var(--m-mono);font-size:9px;letter-spacing:.04em}
+.m-sched .ic{width:9px;height:9px;stroke-width:2}
+
+/* chat / composer pane */
+.m-chat{display:flex;flex-direction:column;background:var(--m-chat-bg)}
+.m-chathead{padding:11px 14px;border-bottom:1px solid var(--m-line);display:flex;align-items:baseline;gap:8px}
+.m-chathead b{font-size:13px;letter-spacing:-.01em}
+.m-chathead span{font-family:var(--m-mono);font-size:10px;color:var(--m-ink-soft);margin-left:auto}
+.m-stream{flex:1;padding:12px 14px;display:flex;flex-direction:column;gap:8px;justify-content:flex-end;overflow:hidden}
+.m-composer{border-top:1px solid var(--m-line);padding:10px 12px 12px;background:var(--m-comp-bg)}
+.m-chips{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}
+.m-chip{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:3.5px 9px;border-radius:99px;
+  border:1px solid var(--m-line);
+  font-size:11px;color:var(--m-ink-soft);background:var(--m-chip-bg);
+}
+.m-chip .dot{width:6px;height:6px;border-radius:50%;background:var(--c)}
+.m-chip.on{background:var(--c);border-color:var(--c);color:#fff;font-weight:600}
+.m-chip.on .dot{background:rgba(255,255,255,.85)}
+.m-toggles{display:flex;gap:12px;margin-bottom:8px;padding-bottom:8px;border-bottom:1px dashed var(--m-line)}
+.m-tog{display:flex;align-items:center;gap:6px;font-size:10.5px;color:var(--m-ink-soft)}
+.m-tog i{width:24px;height:14px;border-radius:99px;background:var(--m-line);position:relative;flex:none}
+.m-tog i::after{content:"";position:absolute;top:2px;left:2px;width:10px;height:10px;border-radius:50%;background:var(--m-chat-bg)}
+.m-tog.on i{background:var(--m-accent)}
+.m-tog.on i::after{left:12px}
+.m-tog.on{color:var(--m-ink);font-weight:600}
+.m-tog.warn.on i{background:var(--m-urgent)}
+.m-inputbar{display:flex;align-items:flex-end;gap:8px;border:1px solid var(--m-line-strong);border-radius:var(--m-radius);background:var(--m-input-bg);padding:8px 8px 8px 11px}
+.m-inputbar p{margin:0;flex:1;color:var(--m-ink-soft);font-size:12px}
+.m-send{width:26px;height:26px;border-radius:var(--m-tail);background:var(--m-accent);color:var(--m-accent-ink);display:grid;place-items:center;flex:none}
+.m-send .ic{width:13px;height:13px;stroke-width:1.9}
+
+/* ---------- phone ---------- */
+.phone{
+  width:264px;height:528px;
+  border:8px solid var(--m-phone-frame);
+  border-radius:30px;
+  background:var(--m-bg);
+  color:var(--m-ink);
+  font-family:var(--m-font);
+  font-size:12px;
+  overflow:hidden;
+  display:flex;flex-direction:column;
+  box-shadow:0 10px 26px rgba(0,0,0,.16);
+}
+.ph-status{display:flex;justify-content:space-between;padding:6px 14px 2px;font-family:var(--m-mono);font-size:9.5px;color:var(--m-ink-soft)}
+.ph-top{padding:4px 12px 10px;border-bottom:1px solid var(--m-line);background:var(--m-head-bg)}
+.ph-title{display:flex;align-items:center;gap:7px;font-weight:700;font-size:14px;margin-bottom:9px}
+.ph-title .dot{width:8px;height:8px;border-radius:50%;background:var(--c)}
+.ph-seg{display:flex;border:1px solid var(--m-line);border-radius:99px;padding:2px;background:var(--m-chip-bg)}
+.ph-seg span{flex:1;text-align:center;padding:4px;border-radius:99px;font-size:11px;color:var(--m-ink-soft)}
+.ph-seg span.on{background:var(--m-accent);color:var(--m-accent-ink);font-weight:700}
+.ph-body{flex:1;overflow:hidden;padding:11px 12px;display:flex;flex-direction:column;gap:8px}
+
+/* calendar */
+.cal-head{display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:700}
+.cal-head .mo{font-family:var(--m-mono);font-size:11px;color:var(--m-ink-soft);letter-spacing:.06em}
+.cal-dow,.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cal-dow span{text-align:center;font-family:var(--m-mono);font-size:8.5px;color:var(--m-ink-soft);padding-bottom:2px}
+.cal-cell{aspect-ratio:1/1.12;border-radius:var(--m-tail);padding:2px 3px;font-family:var(--m-mono);font-size:9px;color:var(--m-ink-soft);display:flex;flex-direction:column;gap:1.5px;background:var(--m-cell)}
+.cal-cell.out{opacity:.32}
+.cal-cell.today{background:var(--m-me);color:var(--m-me-ink);font-weight:700}
+.cal-cell u{text-decoration:none}
+.cal-cell b{height:3px;border-radius:2px;background:var(--c);display:block}
+.cal-list{margin-top:6px;border-top:1px solid var(--m-line);padding-top:8px;display:flex;flex-direction:column;gap:6px}
+.cal-ev{display:flex;gap:8px;align-items:flex-start}
+.cal-ev .tm{font-family:var(--m-mono);font-size:9.5px;color:var(--m-ink-soft);padding-top:4px;width:34px;flex:none;font-variant-numeric:tabular-nums}
+.cal-ev .bub{flex:1;padding:6px 9px;background:var(--m-me);color:var(--m-me-ink);border:var(--m-bub-border);border-radius:var(--m-radius) var(--m-tail) var(--m-radius) var(--m-radius);font-size:11.5px;font-family:var(--m-note-font)}
+
+/* ---------- skin 1 · DESK ---------- */
+.dir--desk{
+  --m-bg:#F3F4F8; --m-thread-bg:#F3F4F8; --m-head-bg:#FFFFFF; --m-chat-bg:#FFFFFF;
+  --m-comp-bg:#FFFFFF; --m-input-bg:#F7F8FB; --m-pin-bg:#FFFFFF; --m-pin-item:#FDF2F1;
+  --m-cell:#FFFFFF; --m-chip-bg:#F7F8FB;
+  --m-rail:#23233B; --m-rail-fg:#B9BBD4; --m-rail-hi:#FFFFFF; --m-rail-on:#34345A;
+  --m-line:#DFE1EA; --m-line-strong:#C6C9D6;
+  --m-ink:#1B1C28; --m-ink-soft:#676A83;
+  --m-accent:#4B4ACF; --m-accent-ink:#FFFFFF;
+  --m-me:#E5E5FB; --m-me-ink:#23234E; --m-reply:#FFFFFF;
+  --m-bub-border:1px solid transparent;
+  --m-chip-on:#4B4ACF; --m-chip-on-ink:#FFFFFF;
+  --m-urgent:#CE3B2F; --m-urgent-bg:#FDF2F1;
+  --m-sched-bg:#E4F1EE; --m-sched-ink:#0E7367;
+  --m-phone-frame:#23233B;
+  --m-radius:7px; --m-tail:2px;
+  --m-font:"IBM Plex Sans JP","Hiragino Kaku Gothic ProN",system-ui,sans-serif;
+  --m-note-font:var(--m-font);
+  --m-mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+.dir--desk .m-row.left .m-bub{border:1px solid var(--m-line)}
+
+/* ---------- skin 2 · PAPER ---------- */
+.dir--paper{
+  --m-bg:#E9EAE4; --m-thread-bg:#E9EAE4; --m-head-bg:#F6F6F2; --m-chat-bg:#F6F6F2;
+  --m-comp-bg:#F6F6F2; --m-input-bg:#FFFFFE; --m-pin-bg:#F6F6F2; --m-pin-item:#F4E9E4;
+  --m-cell:#F6F6F2; --m-chip-bg:#EFEFE9;
+  --m-rail:#2E332C; --m-rail-fg:#B3B9AC; --m-rail-hi:#F6F6F2; --m-rail-on:#414737;
+  --m-line:#CFD1C6; --m-line-strong:#B5B8AA;
+  --m-ink:#22261F; --m-ink-soft:#6A6F62;
+  --m-accent:#2F5D62; --m-accent-ink:#F6F6F2;
+  --m-me:#F6F6F2; --m-me-ink:#22261F; --m-reply:#DEDFD6;
+  --m-bub-border:1px solid #C7CABD;
+  --m-chip-on:#2F5D62; --m-chip-on-ink:#F6F6F2;
+  --m-urgent:#B33A22; --m-urgent-bg:#F4E9E4;
+  --m-sched-bg:#E2E5D5; --m-sched-ink:#5A6236;
+  --m-phone-frame:#2E332C;
+  --m-radius:3px; --m-tail:3px;
+  --m-font:"BIZ UDPGothic","Hiragino Kaku Gothic ProN",system-ui,sans-serif;
+  --m-note-font:"Shippori Mincho B1","Hiragino Mincho ProN",Georgia,serif;
+  --m-mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+.dir--paper .m-bub{box-shadow:1px 1px 0 rgba(34,38,31,.06)}
+.dir--paper .m-head .ttl,.dir--paper .ph-title,.dir--paper .m-brand{font-family:var(--m-note-font);font-weight:700}
+.dir--paper .m-day span{font-family:var(--m-note-font);letter-spacing:.04em;text-transform:none;font-size:11px}
+
+/* ---------- skin 3 · NIGHT ---------- */
+.dir--night{
+  --m-bg:#111419; --m-thread-bg:#111419; --m-head-bg:#171B21; --m-chat-bg:#171B21;
+  --m-comp-bg:#171B21; --m-input-bg:#1F242C; --m-pin-bg:#171B21; --m-pin-item:#2A1A1C;
+  --m-cell:#1A1F26; --m-chip-bg:#1F242C;
+  --m-rail:#0B0D11; --m-rail-fg:#868FA0; --m-rail-hi:#F2F5FA; --m-rail-on:#1E242E;
+  --m-line:#272C35; --m-line-strong:#39404C;
+  --m-ink:#E6E9EE; --m-ink-soft:#8A93A3;
+  --m-accent:#4C8DFF; --m-accent-ink:#081018;
+  --m-me:#254A78; --m-me-ink:#E9F1FF; --m-reply:#1F242C;
+  --m-bub-border:1px solid transparent;
+  --m-chip-on:#4C8DFF; --m-chip-on-ink:#081018;
+  --m-urgent:#FF6B6B; --m-urgent-bg:#2A1A1C;
+  --m-sched-bg:#16332C; --m-sched-ink:#38C7A8;
+  --m-phone-frame:#05070A;
+  --m-radius:15px; --m-tail:5px;
+  --m-font:"M PLUS 1","Hiragino Kaku Gothic ProN",system-ui,sans-serif;
+  --m-note-font:var(--m-font);
+  --m-mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+.dir--night .m-inputbar{border-radius:20px}
+.dir--night .m-send{border-radius:50%;width:28px;height:28px}
+.dir--night .m-pin{border-radius:10px;border-left-width:3px}
+
+/* ---------- closing ---------- */
+.next{
+  margin-top:70px;
+  border:1px solid var(--p-line-2);
+  background:var(--p-bg-2);
+  padding:26px 24px;
+}
+.next h2{margin:0 0 6px;font-size:21px;font-weight:900;letter-spacing:-.02em}
+.next p{margin:0 0 20px;color:var(--p-ink-2);font-size:14.5px;max-width:44rem}
+.steps{display:grid;gap:1px;background:var(--p-line);border:1px solid var(--p-line)}
+.step{background:var(--p-bg-2);padding:14px 16px;display:flex;gap:14px;align-items:baseline}
+.step .n{font-family:var(--p-mono);font-size:11px;font-weight:600;color:var(--p-ink-3);width:24px;flex:none;letter-spacing:.06em}
+.step .t{font-size:14px}
+.step .t b{display:block;font-weight:700;margin-bottom:2px}
+.step .t span{color:var(--p-ink-2)}
+.step.now{background:var(--p-mark);color:var(--p-mark-ink)}
+.step.now .n,.step.now .t span{color:var(--p-mark-ink);opacity:.72}
+</style>
+
+<svg hidden aria-hidden="true">
+  <symbol id="i-home" viewBox="0 0 16 16"><path d="M2.5 6.6 8 2.4l5.5 4.2V13a.6.6 0 0 1-.6.6H3.1a.6.6 0 0 1-.6-.6z"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.2"/><path d="M8 1.6v1.6M8 12.8v1.6M14.4 8h-1.6M3.2 8H1.6M12.5 3.5l-1.1 1.1M4.6 11.4l-1.1 1.1M12.5 12.5l-1.1-1.1M4.6 4.6 3.5 3.5"/></symbol>
+  <symbol id="i-send" viewBox="0 0 16 16"><path d="M2 8 14 2.5 9.4 14 7.7 9.1z"/><path d="m7.7 9.1 6.3-6.6"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M8 4.6V8l2.3 1.6"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 16 16"><path d="M4 14V2.8M4 3.2h8l-1.6 2.6L12 8.4H4"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 16 16"><rect x="2.2" y="3.4" width="11.6" height="10.4" rx="1"/><path d="M2.2 6.6h11.6M5.4 2v2.6M10.6 2v2.6"/></symbol>
+</svg>
+
+<div class="wrap">
+
+<header class="mast">
+  <div class="mast-l">
+    <p class="eyebrow">Step 01 — Visual direction</p>
+    <h1 data-ja="送信する、というメモの取り方。">Notes you send, not notes you write.</h1>
+    <p class="lede" data-ja="レイアウトは3案とも同じです。左にカテゴリ、中央に選択したページ、右に入力チャット。違うのは「感触」だけ。1案を選んでください。その後に配色の詰めに入ります。">Three takes on the same app. The layout contract is <b>identical</b> in all three — left rail, category page in the middle, chat composer on the right. What changes is how it feels to send yourself a thought. Pick one; we tune the palette after.</p>
+  </div>
+  <div class="langbox">
+    <span class="cap">Language</span>
+    <div class="seg" role="group" aria-label="Preview language">
+      <button type="button" id="lang-en" data-set="en" aria-pressed="true">EN</button>
+      <button type="button" id="lang-ja" data-set="ja" aria-pressed="false">日本語</button>
+    </div>
+  </div>
+</header>
+
+<section class="contract">
+  <h2>Fixed in every direction</h2>
+  <dl><dt data-ja="左：カテゴリのペイン">Left · category pane</dt><dd data-ja="ホーム（カレンダー）、カテゴリ一覧、設定。色ドットと件数付き。">Home calendar, every category with its colour dot and count, settings pinned to the bottom.</dd></dl>
+  <dl><dt data-ja="中央：選択したページ">Middle · the selected page</dt><dd data-ja="上から1/4は緊急メモの固定リスト。その下は日付で区切ったスレッド。">Top quarter is the pinned urgent list. Below it, the thread split by day, newest at the bottom.</dd></dl>
+  <dl><dt data-ja="右：自分宛てチャット">Right · the chat with yourself</dt><dd data-ja="カテゴリ必須選択 → 予定・緊急トグル → 送信。Teams と同じ手の動き。">Category chips (required), schedule and urgent toggles, then send. Same hand movement as Teams.</dd></dl>
+  <dl><dt data-ja="返信＝メモの追記">Replies are added notes</dt><dd data-ja="長押しで「メモを追加」。元メモを引用して左側に吹き出しが付く。">Long-press a note, add another. It lands underneath, quoting the original, on the opposite side.</dd></dl>
+</section>
+
+<!-- ================= DIRECTION 1 ================= -->
+<section class="dirsec">
+  <div class="dirhead">
+    <span class="dirnum">01</span>
+    <h2 class="dirname">Desk<small data-ja="オフィスの延長線上">The one that looks like work already</small></h2>
+  </div>
+  <p class="thesis" data-ja="Teams の直系。四角に近い吹き出し、詰まった行間、落ち着いたインディゴ。仕事中に開いても違和感がなく、「またツールが増えた」と思わせない案です。">Direct descendant of Teams: near-square bubbles, tight leading, a single ink-indigo that never shouts. Opening this next to your actual work chat should feel like the same room — no learning curve, no new tool smell.</p>
+
+  <div class="shot">
+    <div class="mock dir--desk">
+      <aside class="m-rail">
+        <div class="m-brand"><i></i><span data-ja="じぶんメモ">Self</span></div>
+        <div class="m-nav">
+          <div class="m-item"><svg class="ic"><use href="#i-home"/></svg><span class="nm" data-ja="ホーム">Home</span></div>
+        </div>
+        <p class="m-navlbl" data-ja="カテゴリ">Categories</p>
+        <div class="m-nav">
+          <div class="m-item on" style="--c:#8F8EFF"><span class="dot"></span><span class="nm" data-ja="仕事">Work</span><span class="ct">24</span></div>
+          <div class="m-item" style="--c:#2FA694"><span class="dot"></span><span class="nm" data-ja="アイデア">Ideas</span><span class="ct">8</span></div>
+          <div class="m-item" style="--c:#D08A3E"><span class="dot"></span><span class="nm" data-ja="家事">Chores</span><span class="ct">12</span></div>
+          <div class="m-item" style="--c:#B274D6"><span class="dot"></span><span class="nm" data-ja="趣味">Hobby</span><span class="ct">5</span></div>
+          <div class="m-item" style="--c:#8A8EA3"><span class="dot"></span><span class="nm" data-ja="未分類">Uncategorised</span><span class="ct">3</span></div>
+        </div>
+        <div class="m-rail-foot">
+          <div class="m-item"><svg class="ic"><use href="#i-gear"/></svg><span class="nm" data-ja="設定">Settings</span></div>
+        </div>
+      </aside>
+
+      <section class="m-main">
+        <header class="m-head">
+          <span class="ttl" style="--c:#4B4ACF"><span class="dot"></span><span data-ja="仕事">Work</span></span>
+          <span class="sub" data-ja="24件">24 notes</span>
+          <div class="m-views"><span class="on" data-ja="スレッド">Thread</span><span data-ja="週">Week</span><span data-ja="月">Month</span></div>
+        </header>
+
+        <div class="m-pinned">
+          <p class="m-pinhead"><svg class="ic"><use href="#i-flag"/></svg><span data-ja="緊急 · 2件">Urgent · 2</span></p>
+          <div class="m-pinlist">
+            <div class="m-pin"><span class="tx" data-ja="金曜の朝会までにQ3引き継ぎ資料を送る">Ship the Q3 handover doc before Friday standup</span><span class="tm" data-ja="9/11 09:12">Sep 11 · 09:12</span></div>
+            <div class="m-pin"><span class="tx" data-ja="駐車許可証の更新 — 火曜まで。総務に電話">Call facilities about the parking permit — expires Tue</span><span class="tm" data-ja="昨日 17:40">Yest · 17:40</span></div>
+          </div>
+        </div>
+
+        <div class="m-thread">
+          <div class="m-day"><span data-ja="9月11日 木曜日">Thursday, 11 September</span></div>
+          <div class="m-row">
+            <div class="m-meta"><span class="m-cat" style="--c:#4B4ACF"><span class="dot"></span><span data-ja="仕事">Work</span></span><span>09:12</span></div>
+            <div class="m-bub urgent" data-ja="金曜の朝会までにQ3引き継ぎ資料を送る">Ship the Q3 handover doc before Friday standup</div>
+          </div>
+          <div class="m-row">
+            <div class="m-meta"><span>09:14</span></div>
+            <div class="m-bub" data-ja="森さんに請求書の件を確認。月末って言ってた。">Ask Mori about the vendor invoice — he said end of month</div>
+          </div>
+          <div class="m-row left">
+            <div class="m-meta"><span data-ja="追記">Added note</span><span>11:47</span></div>
+            <div class="m-bub"><span class="m-quote" data-ja="森さんに請求書の件を確認…">Ask Mori about the vendor invoice…</span><span data-ja="請求書番号 INV-2291。経理は20日までに必要とのこと。">Invoice ref INV-2291. Finance needs it by the 20th.</span></div>
+          </div>
+          <div class="m-row">
+            <div class="m-meta"><span class="m-sched"><svg class="ic"><use href="#i-cal"/></svg><span data-ja="予定">Scheduled</span></span><span>13:30</span></div>
+            <div class="m-bub" data-ja="デザインレビュー 木 14:00 — レイアウト3案を持っていく">Design review, Thu 14:00 — bring the three layout options</div>
+          </div>
+          <div class="m-day"><span data-ja="今日">Today</span></div>
+          <div class="m-row">
+            <div class="m-meta"><span>08:41</span></div>
+            <div class="m-bub" data-ja="森さんから返信。先方が再発行してくれる。月曜まで動かなくてよい。">Mori replied: vendor will re-issue. Nothing to do until Monday.</div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="m-chat">
+        <header class="m-chathead"><b data-ja="自分宛て">Message yourself</b><span data-ja="今日 6件">6 today</span></header>
+        <div class="m-stream">
+          <div class="m-row">
+            <div class="m-meta"><span class="m-cat" style="--c:#D08A3E"><span class="dot"></span><span data-ja="家事">Chores</span></span><span>07:55</span></div>
+            <div class="m-bub" data-ja="浄水カートリッジ — 東レの方。汎用品じゃない。">Filter cartridge — the Toray one, not the generic</div>
+          </div>
+          <div class="m-row">
+            <div class="m-meta"><span class="m-cat" style="--c:#4B4ACF"><span class="dot"></span><span data-ja="仕事">Work</span></span><span>08:41</span></div>
+            <div class="m-bub" data-ja="森さんから返信。月曜まで動かなくてよい。">Mori replied: nothing to do until Monday.</div>
+          </div>
+        </div>
+        <div class="m-composer">
+          <div class="m-chips">
+            <span class="m-chip on" style="--c:#4B4ACF"><span class="dot"></span><span data-ja="仕事">Work</span></span>
+            <span class="m-chip" style="--c:#0E8A7D"><span class="dot"></span><span data-ja="アイデア">Ideas</span></span>
+            <span class="m-chip" style="--c:#B4610E"><span class="dot"></span><span data-ja="家事">Chores</span></span>
+            <span class="m-chip" style="--c:#8A3FB0"><span class="dot"></span><span data-ja="趣味">Hobby</span></span>
+            <span class="m-chip" style="--c:#6B7085"><span class="dot"></span><span data-ja="未分類">Uncategorised</span></span>
+          </div>
+          <div class="m-toggles">
+            <span class="m-tog on"><i></i><span data-ja="予定・重要">Schedule</span></span>
+            <span class="m-tog warn"><i></i><span data-ja="緊急">Urgent</span></span>
+          </div>
+          <div class="m-inputbar">
+            <p data-ja="自分にメッセージ…">Message yourself…</p>
+            <span class="m-send"><svg class="ic"><use href="#i-send"/></svg></span>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+  <p class="shotcap" data-ja="デスクトップ / タブレット — 「仕事」カテゴリのページ">Desktop &amp; tablet — the Work category page</p>
+
+  <div class="underrow">
+    <div class="phone dir--desk">
+      <div class="ph-status"><span>9:41</span><span data-ja="月 9/14">Mon 14</span></div>
+      <div class="ph-top">
+        <div class="ph-title" style="--c:#4B4ACF"><svg class="ic"><use href="#i-cal"/></svg><span data-ja="ホーム">Home</span></div>
+        <div class="ph-seg"><span class="on" data-ja="ノート">Notes</span><span data-ja="入力">Write</span></div>
+      </div>
+      <div class="ph-body">
+        <div class="cal-head"><span data-ja="9月">September</span><span class="mo">2026</span></div>
+        <div class="cal-dow"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div>
+        <div class="cal-grid">
+          <div class="cal-cell out"><u>31</u></div><div class="cal-cell"><u>1</u></div><div class="cal-cell"><u>2</u></div><div class="cal-cell"><u>3</u></div><div class="cal-cell"><u>4</u></div><div class="cal-cell"><u>5</u></div><div class="cal-cell"><u>6</u></div>
+          <div class="cal-cell"><u>7</u></div><div class="cal-cell"><u>8</u></div><div class="cal-cell"><u>9</u></div><div class="cal-cell"><u>10</u></div><div class="cal-cell" style="--c:#4B4ACF"><u>11</u><b></b></div><div class="cal-cell"><u>12</u></div><div class="cal-cell"><u>13</u></div>
+          <div class="cal-cell today" style="--c:#B4610E"><u>14</u><b></b></div><div class="cal-cell"><u>15</u></div><div class="cal-cell"><u>16</u></div><div class="cal-cell"><u>17</u></div><div class="cal-cell" style="--c:#CE3B2F"><u>18</u><b></b></div><div class="cal-cell"><u>19</u></div><div class="cal-cell"><u>20</u></div>
+          <div class="cal-cell"><u>21</u></div><div class="cal-cell" style="--c:#8A3FB0"><u>22</u><b></b></div><div class="cal-cell"><u>23</u></div><div class="cal-cell"><u>24</u></div><div class="cal-cell"><u>25</u></div><div class="cal-cell"><u>26</u></div><div class="cal-cell"><u>27</u></div>
+        </div>
+        <div class="cal-list">
+          <div class="cal-ev"><span class="tm">14:30</span><span class="bub" data-ja="歯医者 — 保険証を持っていく">Dentist — bring the insurance card</span></div>
+          <div class="cal-ev"><span class="tm">19:00</span><span class="bub" data-ja="米が切れた。帰りに買う。">Out of rice. Buy on the way home.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="spec">
+        <h3>Palette</h3>
+        <div class="swatches">
+          <div class="sw"><i style="background:#23233B"></i><span>#23233B</span></div>
+          <div class="sw"><i style="background:#4B4ACF"></i><span>#4B4ACF</span></div>
+          <div class="sw"><i style="background:#E5E5FB"></i><span>#E5E5FB</span></div>
+          <div class="sw"><i style="background:#F3F4F8"></i><span>#F3F4F8</span></div>
+          <div class="sw"><i style="background:#CE3B2F"></i><span>#CE3B2F</span></div>
+          <div class="sw"><i style="background:#1B1C28"></i><span>#1B1C28</span></div>
+        </div>
+      </div>
+      <div class="spec">
+        <h3>Type</h3>
+        <p class="typerow" data-ja="本文とUI：IBM Plex Sans JP（欧文と和文が同じ設計、混植で崩れない）。時刻と件数：IBM Plex Mono。"><b>IBM Plex Sans JP</b> for everything — one family that draws Latin and Japanese from the same skeleton, so mixed lines never wobble. <b>IBM Plex Mono</b> for timestamps and counts.</p>
+      </div>
+      <div class="spec">
+        <h3>What makes it this one</h3>
+        <ul class="diffs">
+          <li data-ja="<b>角がほぼ立った吹き出し（7px）。</b>チャットらしさは残しつつ、遊びすぎない。"><b>7px bubbles with a 2px tail corner.</b> Chat-shaped, but with the corner squared off on the sending side — the Teams tell.</li>
+          <li data-ja="<b>緊急メモは赤枠＋赤文字。</b>上部の固定リストと同じ見た目なので、スレッド内でも即座に見つかる。"><b>Urgent notes are outlined, not filled.</b> Same treatment in the pinned block and in the thread, so your eye learns one shape.</li>
+          <li data-ja="<b>カテゴリ色は点でしか出さない。</b>吹き出しは全部同じ色。画面が騒がしくならない。"><b>Category colour lives in the dot only.</b> Bubbles stay one colour, so a busy day still reads as one calm column.</li>
+          <li data-ja="<b>暗い左レール。</b>Teams/Slack と同じ重心。目が迷わない。"><b>Dark rail, light canvas.</b> The weight distribution every work chat app has trained you on.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DIRECTION 2 ================= -->
+<section class="dirsec">
+  <div class="dirhead">
+    <span class="dirnum">02</span>
+    <h2 class="dirname">Tsuzuri<small data-ja="綴り — 綴じられた紙の束">Paper, threaded</small></h2>
+  </div>
+  <p class="thesis" data-ja="チャットの操作感はそのままに、見た目は紙。吹き出しは塗らずに罫線だけ、本文は明朝。送った瞬間にノートに綴じられていく感じを狙った案。仕事以外のメモが多くなるならこちら。">Same mechanics, different material. Bubbles are outlined rather than filled, note text is set in Mincho, and timestamps sit in the margin like a ledger. It behaves like a chat and reads like a notebook — the right call if most of what you send yourself isn't work.</p>
+
+  <div class="shot">
+    <div class="mock dir--paper">
+      <aside class="m-rail">
+        <div class="m-brand"><i></i><span data-ja="じぶんメモ">Self</span></div>
+        <div class="m-nav">
+          <div class="m-item"><svg class="ic"><use href="#i-home"/></svg><span class="nm" data-ja="ホーム">Home</span></div>
+        </div>
+        <p class="m-navlbl" data-ja="カテゴリ">Categories</p>
+        <div class="m-nav">
+          <div class="m-item" style="--c:#6FA8AD"><span class="dot"></span><span class="nm" data-ja="仕事">Work</span><span class="ct">24</span></div>
+          <div class="m-item on" style="--c:#C6AE4E"><span class="dot"></span><span class="nm" data-ja="アイデア">Ideas</span><span class="ct">8</span></div>
+          <div class="m-item" style="--c:#C4825E"><span class="dot"></span><span class="nm" data-ja="家事">Chores</span><span class="ct">12</span></div>
+          <div class="m-item" style="--c:#9A87BE"><span class="dot"></span><span class="nm" data-ja="趣味">Hobby</span><span class="ct">5</span></div>
+          <div class="m-item" style="--c:#8E9285"><span class="dot"></span><span class="nm" data-ja="未分類">Uncategorised</span><span class="ct">3</span></div>
+        </div>
+        <div class="m-rail-foot">
+          <div class="m-item"><svg class="ic"><use href="#i-gear"/></svg><span class="nm" data-ja="設定">Settings</span></div>
+        </div>
+      </aside>
+
+      <section class="m-main">
+        <header class="m-head">
+          <span class="ttl" style="--c:#7A6A1F"><span class="dot"></span><span data-ja="アイデア">Ideas</span></span>
+          <span class="sub" data-ja="8件">8 notes</span>
+          <div class="m-views"><span class="on" data-ja="スレッド">Thread</span><span data-ja="週">Week</span><span data-ja="月">Month</span></div>
+        </header>
+
+        <div class="m-pinned">
+          <p class="m-pinhead"><svg class="ic"><use href="#i-flag"/></svg><span data-ja="緊急 · 1件">Urgent · 1</span></p>
+          <div class="m-pinlist">
+            <div class="m-pin"><span class="tx" data-ja="応募は10月1日締切 — 今週中に3枚選ぶ">Submission closes 1 Oct — choose three prints this week</span><span class="tm" data-ja="9/9 22:06">Sep 9 · 22:06</span></div>
+          </div>
+        </div>
+
+        <div class="m-thread">
+          <div class="m-day"><span data-ja="9月9日 火曜日">Tuesday, 9 September</span></div>
+          <div class="m-row">
+            <div class="m-meta"><span class="m-cat" style="--c:#7A6A1F"><span class="dot"></span><span data-ja="アイデア">Ideas</span></span><span>21:48</span></div>
+            <div class="m-bub" data-ja="メモアプリ。書くんじゃなくて、自分に送る。カテゴリは送信前に必ず選ばせる。">A notes app where you don't write, you send. Category chosen before the message, always.</div>
+          </div>
+          <div class="m-row left">
+            <div class="m-meta"><span data-ja="追記">Added note</span><span data-ja="9/10 07:30">Sep 10 · 07:30</span></div>
+            <div class="m-bub"><span class="m-quote" data-ja="メモアプリ。書くんじゃなくて…">A notes app where you don't write…</span><span data-ja="分類を後回しにできる逃げ道が要る。「未分類」に送って、あとで長押しで振り分け。">Needs an escape hatch: send to Uncategorised, sort it later by long-press.</span></div>
+          </div>
+          <div class="m-row">
+            <div class="m-meta"><span>22:06</span></div>
+            <div class="m-bub urgent" data-ja="応募は10月1日締切 — 今週中に3枚選ぶ">Submission closes 1 Oct — choose three prints this week</div>
+          </div>
+          <div class="m-day"><span data-ja="昨日">Yesterday</span></div>
+          <div class="m-row">
+            <div class="m-meta"><span class="m-sched"><svg class="ic"><use href="#i-cal"/></svg><span data-ja="予定">Scheduled</span></span><span>20:15</span></div>
+            <div class="m-bub" data-ja="9/20 — 暗室の予約が取れた。フィルムは前日に出す。">20 Sep — darkroom booked. Drop the film off the day before.</div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="m-chat">
+        <header class="m-chathead"><b data-ja="自分宛て">Message yourself</b><span data-ja="今日 4件">4 today</span></header>
+        <div class="m-stream">
+          <div class="m-row">
+            <div class="m-meta"><span class="m-cat" style="--c:#5B4B7A"><span class="dot"></span><span data-ja="趣味">Hobby</span></span><span>12:02</span></div>
+            <div class="m-bub" data-ja="現像液、あと1回分しかない。">Only one round of developer left.</div>
+          </div>
+          <div class="m-row">
+            <div class="m-meta"><span class="m-cat" style="--c:#7C8073"><span class="dot"></span><span data-ja="未分類">Uncategorised</span></span><span>14:20</span></div>
+            <div class="m-bub" data-ja="「送信」じゃなくて「置いておく」って言い方の方が近い？">Is the verb really "send"? Maybe it's closer to "leave it somewhere".</div>
+          </div>
+        </div>
+        <div class="m-composer">
+          <div class="m-chips">
+            <span class="m-chip" style="--c:#2F5D62"><span class="dot"></span><span data-ja="仕事">Work</span></span>
+            <span class="m-chip on" style="--c:#7A6A1F"><span class="dot"></span><span data-ja="アイデア">Ideas</span></span>
+            <span class="m-chip" style="--c:#8A4A2B"><span class="dot"></span><span data-ja="家事">Chores</span></span>
+            <span class="m-chip" style="--c:#5B4B7A"><span class="dot"></span><span data-ja="趣味">Hobby</span></span>
+            <span class="m-chip" style="--c:#7C8073"><span class="dot"></span><span data-ja="未分類">Uncategorised</span></span>
+          </div>
+          <div class="m-toggles">
+            <span class="m-tog"><i></i><span data-ja="予定・重要">Schedule</span></span>
+            <span class="m-tog warn on"><i></i><span data-ja="緊急">Urgent</span></span>
+          </div>
+          <div class="m-inputbar">
+            <p data-ja="自分にメッセージ…">Message yourself…</p>
+            <span class="m-send"><svg class="ic"><use href="#i-send"/></svg></span>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+  <p class="shotcap" data-ja="デスクトップ / タブレット — 「アイデア」カテゴリのページ">Desktop &amp; tablet — the Ideas category page</p>
+
+  <div class="underrow">
+    <div class="phone dir--paper">
+      <div class="ph-status"><span>14:20</span><span data-ja="月 9/14">Mon 14</span></div>
+      <div class="ph-top">
+        <div class="ph-title" style="--c:#7A6A1F"><span class="dot"></span><span data-ja="アイデア">Ideas</span></div>
+        <div class="ph-seg"><span data-ja="ノート">Notes</span><span class="on" data-ja="入力">Write</span></div>
+      </div>
+      <div class="ph-body">
+        <div class="m-row" style="width:100%">
+          <div class="m-meta"><span>12:02</span></div>
+          <div class="m-bub" data-ja="現像液、あと1回分しかない。">Only one round of developer left.</div>
+        </div>
+        <div class="m-row" style="width:100%">
+          <div class="m-meta"><span>14:20</span></div>
+          <div class="m-bub" data-ja="「送信」じゃなくて「置いておく」の方が近い？">Is the verb really "send"?</div>
+        </div>
+        <div style="margin-top:auto">
+          <div class="m-chips">
+            <span class="m-chip" style="--c:#2F5D62"><span class="dot"></span><span data-ja="仕事">Work</span></span>
+            <span class="m-chip on" style="--c:#7A6A1F"><span class="dot"></span><span data-ja="アイデア">Ideas</span></span>
+            <span class="m-chip" style="--c:#8A4A2B"><span class="dot"></span><span data-ja="家事">Chores</span></span>
+            <span class="m-chip" style="--c:#7C8073"><span class="dot"></span><span data-ja="未分類">未分類</span></span>
+          </div>
+          <div class="m-toggles">
+            <span class="m-tog"><i></i><span data-ja="予定">Schedule</span></span>
+            <span class="m-tog warn"><i></i><span data-ja="緊急">Urgent</span></span>
+          </div>
+          <div class="m-inputbar">
+            <p data-ja="自分にメッセージ…">Message yourself…</p>
+            <span class="m-send"><svg class="ic"><use href="#i-send"/></svg></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="spec">
+        <h3>Palette</h3>
+        <div class="swatches">
+          <div class="sw"><i style="background:#2E332C"></i><span>#2E332C</span></div>
+          <div class="sw"><i style="background:#2F5D62"></i><span>#2F5D62</span></div>
+          <div class="sw"><i style="background:#E9EAE4"></i><span>#E9EAE4</span></div>
+          <div class="sw"><i style="background:#F6F6F2"></i><span>#F6F6F2</span></div>
+          <div class="sw"><i style="background:#B33A22"></i><span>#B33A22</span></div>
+          <div class="sw"><i style="background:#22261F"></i><span>#22261F</span></div>
+        </div>
+      </div>
+      <div class="spec">
+        <h3>Type</h3>
+        <p class="typerow" data-ja="メモ本文：Shippori Mincho B1（明朝＝書いたもの、という信号）。UI：BIZ UDPGothic。時刻：IBM Plex Mono。"><b>Shippori Mincho B1</b> for note bodies only — Mincho is the signal that this is something you wrote, not something a system logged. <b>BIZ UDPGothic</b> for chrome, <b>IBM Plex Mono</b> for time.</p>
+      </div>
+      <div class="spec">
+        <h3>What makes it this one</h3>
+        <ul class="diffs">
+          <li data-ja="<b>吹き出しを塗らない。</b>罫線＋薄い影だけ。紙を重ねた束に見える。"><b>Bubbles aren't filled.</b> A hairline and a 1px shadow only — a stack of slips, not a stack of chat messages.</li>
+          <li data-ja="<b>本文だけ明朝、UIはゴシック。</b>「自分の言葉」と「アプリの言葉」が書体で分かれる。"><b>Serif for your words, sans for the app's.</b> The two voices never get confused.</li>
+          <li data-ja="<b>3px角。</b>丸みを捨てた分、長文のメモが読みやすい。"><b>3px corners.</b> Losing the roundness buys legibility when a note runs three lines.</li>
+          <li data-ja="<b>朱色は緊急だけ。</b>他は全部くすんだ色なので、赤が一つあるだけで効く。"><b>Vermilion is reserved for urgent.</b> Everything else is desaturated, so one red note carries the whole page.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DIRECTION 3 ================= -->
+<section class="dirsec">
+  <div class="dirhead">
+    <span class="dirnum">03</span>
+    <h2 class="dirname">Yakan<small data-ja="夜間 — 手元の暗い画面">Night, phone-first</small></h2>
+  </div>
+  <p class="thesis" data-ja="LINE / WhatsApp 側の血統。大きく丸い吹き出し、暗い地、カテゴリごとに鮮やかな色。片手・寝る前・歩きながら、が主戦場ならこれ。3案の中で一番「メモを取っている感じ」がしない案です。">The LINE and WhatsApp lineage rather than the Teams one: large round bubbles, a dark ground, saturated category colours that survive being glanced at. Built for one thumb, in bed, at 23:40. Of the three this is the one that feels least like taking notes.</p>
+
+  <div class="shot">
+    <div class="mock dir--night">
+      <aside class="m-rail">
+        <div class="m-brand"><i></i><span data-ja="じぶんメモ">Self</span></div>
+        <div class="m-nav">
+          <div class="m-item"><svg class="ic"><use href="#i-home"/></svg><span class="nm" data-ja="ホーム">Home</span></div>
+        </div>
+        <p class="m-navlbl" data-ja="カテゴリ">Categories</p>
+        <div class="m-nav">
+          <div class="m-item" style="--c:#4C8DFF"><span class="dot"></span><span class="nm" data-ja="仕事">Work</span><span class="ct">24</span></div>
+          <div class="m-item" style="--c:#38C7A8"><span class="dot"></span><span class="nm" data-ja="アイデア">Ideas</span><span class="ct">8</span></div>
+          <div class="m-item on" style="--c:#F0A33C"><span class="dot"></span><span class="nm" data-ja="家事">Chores</span><span class="ct">12</span></div>
+          <div class="m-item" style="--c:#C87BF0"><span class="dot"></span><span class="nm" data-ja="趣味">Hobby</span><span class="ct">5</span></div>
+          <div class="m-item" style="--c:#7C8698"><span class="dot"></span><span class="nm" data-ja="未分類">Uncategorised</span><span class="ct">3</span></div>
+        </div>
+        <div class="m-rail-foot">
+          <div class="m-item"><svg class="ic"><use href="#i-gear"/></svg><span class="nm" data-ja="設定">Settings</span></div>
+        </div>
+      </aside>
+
+      <section class="m-main">
+        <header class="m-head">
+          <span class="ttl" style="--c:#F0A33C"><span class="dot"></span><span data-ja="家事">Chores</span></span>
+          <span class="sub" data-ja="12件">12 notes</span>
+          <div class="m-views"><span class="on" data-ja="スレッド">Thread</span><span data-ja="週">Week</span><span data-ja="月">Month</span></div>
+        </header>
+
+        <div class="m-pinned">
+          <p class="m-pinhead"><svg class="ic"><use href="#i-flag"/></svg><span data-ja="緊急 · 2件">Urgent · 2</span></p>
+          <div class="m-pinlist">
+            <div class="m-pin"><span class="tx" data-ja="ガス点検 火 10–12時 — 在宅必須">Gas inspection Tue 10–12 — someone has to be home</span><span class="tm" data-ja="9/12 19:03">Sep 12 · 19:03</span></div>
+            <div class="m-pin"><span class="tx" data-ja="車検の見積り、今週中に electronics 返送">Return the faulty router before the 16th or they charge for it</span><span class="tm" data-ja="昨日 23:41">Yest · 23:41</span></div>
+          </div>
+        </div>
+
+        <div class="m-thread">
+          <div class="m-day"><span data-ja="9月12日 金曜日">Friday, 12 September</span></div>
+          <div class="m-row">
+            <div class="m-meta"><span class="m-cat" style="--c:#F0A33C"><span class="dot"></span><span data-ja="家事">Chores</span></span><span>19:03</span></div>
+            <div class="m-bub urgent" data-ja="ガス点検 火 10–12時 — 在宅必須">Gas inspection Tue 10–12 — someone has to be home</div>
+          </div>
+          <div class="m-row">
+            <div class="m-meta"><span>19:05</span></div>
+            <div class="m-bub" data-ja="浄水カートリッジ — 東レの方。汎用品じゃない。">Filter cartridge — the Toray one, not the generic</div>
+          </div>
+          <div class="m-row left">
+            <div class="m-meta"><span data-ja="追記">Added note</span><span data-ja="昨日 11:12">Yest · 11:12</span></div>
+            <div class="m-bub"><span class="m-quote" data-ja="浄水カートリッジ — 東レの方…">Filter cartridge — the Toray one…</span><span data-ja="型番 MKC.MX2J。2個入りの方が結局安い。">Model MKC.MX2J. The two-pack works out cheaper.</span></div>
+          </div>
+          <div class="m-day"><span data-ja="昨日">Yesterday</span></div>
+          <div class="m-row">
+            <div class="m-meta"><span class="m-sched"><svg class="ic"><use href="#i-cal"/></svg><span data-ja="予定">Scheduled</span></span><span>23:41</span></div>
+            <div class="m-bub" data-ja="16日までにルーター返送。過ぎると請求される。">Return the faulty router before the 16th or they charge for it</div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="m-chat">
+        <header class="m-chathead"><b data-ja="自分宛て">Message yourself</b><span data-ja="今日 3件">3 today</span></header>
+        <div class="m-stream">
+          <div class="m-row">
+            <div class="m-meta"><span class="m-cat" style="--c:#C87BF0"><span class="dot"></span><span data-ja="趣味">Hobby</span></span><span>22:58</span></div>
+            <div class="m-bub" data-ja="ベースの弦、そろそろ替える。45–105で。">New bass strings. 45–105 gauge.</div>
+          </div>
+          <div class="m-row">
+            <div class="m-meta"><span class="m-cat" style="--c:#7C8698"><span class="dot"></span><span data-ja="未分類">Uncategorised</span></span><span>23:40</span></div>
+            <div class="m-bub" data-ja="あとで考える。">Deal with this later.</div>
+          </div>
+        </div>
+        <div class="m-composer">
+          <div class="m-chips">
+            <span class="m-chip" style="--c:#4C8DFF"><span class="dot"></span><span data-ja="仕事">Work</span></span>
+            <span class="m-chip" style="--c:#38C7A8"><span class="dot"></span><span data-ja="アイデア">Ideas</span></span>
+            <span class="m-chip on" style="--c:#F0A33C"><span class="dot"></span><span data-ja="家事">Chores</span></span>
+            <span class="m-chip" style="--c:#C87BF0"><span class="dot"></span><span data-ja="趣味">Hobby</span></span>
+            <span class="m-chip" style="--c:#7C8698"><span class="dot"></span><span data-ja="未分類">Uncategorised</span></span>
+          </div>
+          <div class="m-toggles">
+            <span class="m-tog on"><i></i><span data-ja="予定・重要">Schedule</span></span>
+            <span class="m-tog warn on"><i></i><span data-ja="緊急">Urgent</span></span>
+          </div>
+          <div class="m-inputbar">
+            <p data-ja="自分にメッセージ…">Message yourself…</p>
+            <span class="m-send"><svg class="ic"><use href="#i-send"/></svg></span>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+  <p class="shotcap" data-ja="デスクトップ / タブレット — 「家事」カテゴリのページ">Desktop &amp; tablet — the Chores category page</p>
+
+  <div class="underrow">
+    <div class="phone dir--night">
+      <div class="ph-status"><span>23:41</span><span data-ja="日 9/13">Sun 13</span></div>
+      <div class="ph-top">
+        <div class="ph-title" style="--c:#F0A33C"><span class="dot"></span><span data-ja="家事">Chores</span></div>
+        <div class="ph-seg"><span class="on" data-ja="ノート">Notes</span><span data-ja="入力">Write</span></div>
+      </div>
+      <div class="ph-body">
+        <div class="m-pinned" style="margin:-11px -12px 0;padding:10px 12px">
+          <p class="m-pinhead"><svg class="ic"><use href="#i-flag"/></svg><span data-ja="緊急 · 2件">Urgent · 2</span></p>
+          <div class="m-pinlist">
+            <div class="m-pin"><span class="tx" data-ja="ガス点検 火 10–12時">Gas inspection Tue 10–12</span></div>
+          </div>
+        </div>
+        <div class="m-day" style="margin-top:8px"><span data-ja="9月12日">12 Sep</span></div>
+        <div class="m-row" style="width:100%">
+          <div class="m-meta"><span>19:05</span></div>
+          <div class="m-bub" data-ja="浄水カートリッジ — 東レの方。">Filter cartridge — the Toray one</div>
+        </div>
+        <div class="m-row left" style="width:100%">
+          <div class="m-meta"><span data-ja="追記">Added</span><span>11:12</span></div>
+          <div class="m-bub"><span class="m-quote" data-ja="浄水カートリッジ…">Filter cartridge…</span><span data-ja="型番 MKC.MX2J">Model MKC.MX2J</span></div>
+        </div>
+        <div class="m-row" style="width:100%">
+          <div class="m-meta"><span class="m-sched"><svg class="ic"><use href="#i-cal"/></svg><span data-ja="予定">Scheduled</span></span><span>23:41</span></div>
+          <div class="m-bub" data-ja="16日までにルーター返送">Return the router before the 16th</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="spec">
+        <h3>Palette</h3>
+        <div class="swatches">
+          <div class="sw"><i style="background:#0B0D11"></i><span>#0B0D11</span></div>
+          <div class="sw"><i style="background:#171B21"></i><span>#171B21</span></div>
+          <div class="sw"><i style="background:#254A78"></i><span>#254A78</span></div>
+          <div class="sw"><i style="background:#4C8DFF"></i><span>#4C8DFF</span></div>
+          <div class="sw"><i style="background:#38C7A8"></i><span>#38C7A8</span></div>
+          <div class="sw"><i style="background:#FF6B6B"></i><span>#FF6B6B</span></div>
+        </div>
+      </div>
+      <div class="spec">
+        <h3>Type</h3>
+        <p class="typerow" data-ja="本文とUI：M PLUS 1（和文の線が均一で、暗い背景でも潰れない）。時刻：IBM Plex Mono。"><b>M PLUS 1</b> throughout — even stroke weights that hold up as light text on a dark ground, where most Japanese faces smear. <b>IBM Plex Mono</b> for time.</p>
+      </div>
+      <div class="spec">
+        <h3>What makes it this one</h3>
+        <ul class="diffs">
+          <li data-ja="<b>15px の大きな丸み。</b>親指で触る前提のサイズ感。"><b>15px radius, generous padding.</b> Sized for a thumb before it's sized for a cursor.</li>
+          <li data-ja="<b>自分の吹き出しは濃い青の塗り。</b>LINE/WhatsApp と同じ「自分＝色つき」のルール。"><b>Your bubbles are filled deep blue.</b> The messaging convention you already obey: coloured means me.</li>
+          <li data-ja="<b>カテゴリ色が5色とも強い。</b>暗い地なので彩度を上げても濁らず、一目で分類が分かる。"><b>Five saturated category hues.</b> A dark ground is the only place you can run five strong colours without mud.</li>
+          <li data-ja="<b>夜に開いても眩しくない。</b>寝る前の思いつきを拾うのが主用途ならこれ一択。"><b>Doesn't blind you at midnight.</b> If the notes you'd lose are the ones that arrive in bed, this is the one.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="next">
+  <h2 data-ja="この次">What happens after you pick</h2>
+  <p data-ja="方向を1つ決めてください。組み合わせ（例：01の骨格＋03の夜モード）も可能です。配色の細部はご指示をいただいてから詰めます。">Choose one direction — or a hybrid, "01's structure with 03's night mode" is a perfectly good answer. The palette gets refined once you send me your colour instructions; these are starting positions, not final swatches.</p>
+  <div class="steps">
+    <div class="step now"><span class="n">01</span><span class="t"><b data-ja="ビジュアル方向の決定">Visual direction</b><span data-ja="この資料 — いま決めるところ">This page — your call</span></span></div>
+    <div class="step"><span class="n">02</span><span class="t"><b data-ja="フレームワークの確定">Framework &amp; stack</b><span data-ja="React + TypeScript + Vite を推奨。理由はチャットに記載。">React + TypeScript + Vite recommended — reasoning in the chat.</span></span></div>
+    <div class="step"><span class="n">03</span><span class="t"><b data-ja="配色バリエーション">Palette variations</b><span data-ja="ご指示をいただいてから、選ばれた方向で3–4パターン提示。">Three or four variations on the chosen direction, once you send your notes.</span></span></div>
+    <div class="step"><span class="n">04</span><span class="t"><b data-ja="ストレージ層 → UI → PWA">Storage layer, then UI, then PWA</b><span data-ja="IndexedDB・書き出し/読み込み・往復テストを最初に固める。">IndexedDB behind one module, export/import with the round-trip test, then the installable shell.</span></span></div>
+    <div class="step"><span class="n">05</span><span class="t"><b data-ja="マニュアル2種と広告素材">Two manuals, poster, landing page</b><span data-ja="動くv1が出てから。画像と方針をその時にお願いします。">After a deployable v1 — I'll ask for your images and ideas then.</span></span></div>
+  </div>
+</section>
+
+</div>
+
+<script>
+(function(){
+  var root = document.documentElement;
+  var nodes = Array.prototype.slice.call(document.querySelectorAll('[data-ja]'));
+  nodes.forEach(function(el){ el._en = el.innerHTML; });
+  var btns = Array.prototype.slice.call(document.querySelectorAll('.seg button'));
+  function setLang(l){
+    root.setAttribute('data-lang', l);
+    nodes.forEach(function(el){ el.innerHTML = (l === 'ja') ? el.dataset.ja : el._en; });
+    btns.forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.set === l)); });
+  }
+  btns.forEach(function(b){ b.addEventListener('click', function(){ setLang(b.dataset.set); }); });
+  setLang('en');
+})();
+</script>
