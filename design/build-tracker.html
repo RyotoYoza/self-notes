@@ -115,19 +115,19 @@ footer{margin-top:40px;font-family:var(--mono);font-size:10.5px;color:var(--ink-
 
 <header class="mast">
   <p class="eyebrow">Self · じぶんメモ — build status</p>
-  <h1>It’s live. Open it on your phone.</h1>
-  <p class="lede"><a href="https://ryotoyoza.github.io/self-notes/" style="color:inherit">ryotoyoza.github.io/self-notes</a> — installable, offline-capable, five palettes, English and Japanese. Every component below, what state it is in, and what proves it works.</p>
+  <h1>Live, with a landing page to share.</h1>
+  <p class="lede"><a href="https://ryotoyoza.github.io/self-notes/" style="color:inherit">ryotoyoza.github.io/self-notes</a> is the landing page to send people; the app itself lives at <a href="https://ryotoyoza.github.io/self-notes/app/" style="color:inherit">/app/</a>. Installable, offline-capable, five palettes, English and Japanese. Every component below, what state it is in, and what proves it works.</p>
 </header>
 
 <div class="summary">
-  <div class="stat is-done"><span class="n">25</span><span class="l">Built &amp; verified</span></div>
-  <div class="stat is-wait"><span class="n">3</span><span class="l">Waiting on you</span></div>
-  <div class="stat"><span class="n">1</span><span class="l">Not started</span></div>
+  <div class="stat is-done"><span class="n">27</span><span class="l">Built &amp; verified</span></div>
+  <div class="stat is-wait"><span class="n">2</span><span class="l">Waiting on you</span></div>
+  <div class="stat"><span class="n">0</span><span class="l">Not started</span></div>
   <div class="stat"><span class="n">16</span><span class="l">Tests passing</span></div>
 </div>
 
-<div class="bar" role="img" aria-label="25 of 29 components built, 3 waiting on input, 1 not started">
-  <i class="d" style="width:86%"></i><i class="w" style="width:10%"></i>
+<div class="bar" role="img" aria-label="27 of 29 components built, 2 waiting on input, 0 not started">
+  <i class="d" style="width:93%"></i><i class="w" style="width:7%"></i>
 </div>
 <p class="barkey">
   <span><b style="background:var(--done)"></b>Built &amp; verified</span>
@@ -263,7 +263,7 @@ footer{margin-top:40px;font-family:var(--mono);font-size:10.5px;color:var(--ink-
   <div class="phead">
     <span class="pnum">Phase 04</span>
     <h2>Your call before I continue</h2>
-    <span class="pfrac">0 / 3</span>
+    <span class="pfrac">1 / 3</span>
   </div>
   <p class="pnote">These are blocked on material or decisions only you have. Everything above ships without them.</p>
   <div class="rows">
@@ -283,9 +283,9 @@ footer{margin-top:40px;font-family:var(--mono);font-size:10.5px;color:var(--ink-
       <div><p class="nm">Single-image poster ad</p><p class="de">One sentence on what it does, over the app UI. You said you would send images and ideas at this point — I will ask.</p></div>
       <span class="pill wait">Needs your images</span>
     </div>
-    <div class="row wait">
-      <div><p class="nm">Landing page</p><p class="de">Explains the app and sends people to it. Same — your images and direction first.</p></div>
-      <span class="pill wait">Needs your images</span>
+    <div class="row done">
+      <div><p class="nm">Landing page</p><p class="de">Bilingual, sketch-annotated, live at the site root. The app screens are rebuilt in markup rather than screenshotted, so the EN/JA toggle switches the product too — a screenshot cannot translate.</p></div>
+      <span class="pill done">Done</span>
     </div>
   </div>
 </section>
@@ -299,7 +299,7 @@ footer{margin-top:40px;font-family:var(--mono);font-size:10.5px;color:var(--ink-
   </div>
   <div class="rows">
     <div class="row todo">
-      <div><p class="nm">Deployment</p><p class="de">Live at <code>ryotoyoza.github.io/self-notes</code> from the public repo <code>RyotoYoza/self-notes</code>. Every push to main runs the tests and redeploys only if they pass. Service worker, manifest and icons all verified on the live URL.</p></div>
+      <div><p class="nm">Deployment</p><p class="de">Landing page at <code>/self-notes/</code>, app at <code>/self-notes/app/</code>, from the public repo <code>RyotoYoza/self-notes</code>. Every push to main runs the tests and redeploys only if they pass. A tombstone service worker ships at the app's old scope so anyone who opened the earlier URL is released from its cache instead of being stuck on it.</p></div>
       <span class="pill done">Done</span>
     </div>
     <div class="row todo">
@@ -315,7 +315,8 @@ footer{margin-top:40px;font-family:var(--mono);font-size:10.5px;color:var(--ink-
   <dl>
     <div><dt>Test suite</dt><dd><b>16 / 16</b> passing</dd></div>
     <div><dt>Phone nav</dt><dd>List → conversation, verified</dd></div>
-    <div><dt>Live URL</dt><dd>Service worker, manifest, icons all 200</dd></div>
+    <div><dt>Live URLs</dt><dd>Landing and app both verified</dd></div>
+    <div><dt>Old cache</dt><dd>Released, confirmed in browser</dd></div>
     <div><dt>Type check</dt><dd><b>Clean</b>, strict mode</dd></div>
     <div><dt>Production build</dt><dd><b>93 KB</b> gzipped</dd></div>
     <div><dt>Schema version</dt><dd><b>1</b></dd></div>
@@ -333,10 +334,10 @@ footer{margin-top:40px;font-family:var(--mono);font-size:10.5px;color:var(--ink-
   </div>
   <div class="ask">
     <span class="q">02</span>
-    <span class="b"><b>Images and ideas for the poster and landing page</b><span>You said you would send these at this stage. The app is deployable now, so these are the last things blocked.</span></span>
+    <span class="b"><b>Images and ideas for the poster ad</b><span>The last thing outstanding. The landing page has now set the look — Slate &amp; Amber, marker annotations, the “texting yourself” line — for the poster to build on.</span></span>
   </div>
 </section>
 
-<footer>Updated 15 September 2026 · deployed · Self / じぶんメモ</footer>
+<footer>Updated 15 September 2026 · landing live · Self / じぶんメモ</footer>
 
 </div>
