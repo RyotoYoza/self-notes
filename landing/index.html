@@ -397,6 +397,19 @@ footer .sp{margin-left:auto}
   <symbol id="i-arrow" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4"/></symbol>
 </svg>
 
+<script>
+/* Launching from a home-screen icon means "open the app", never "show me the
+   pitch again". Anyone whose shortcut still points at the old root URL — this
+   is where the app used to live — lands here instead of the app, so send them
+   on. A normal browser tab is left alone: this page has to stay shareable. */
+(function () {
+  var launched =
+    (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
+    window.navigator.standalone === true;
+  if (launched) location.replace('app/');
+})();
+</script>
+
 <!-- ===================== NAV ===================== -->
 <nav class="nav">
   <div class="wrap">
@@ -411,7 +424,7 @@ footer .sp{margin-left:auto}
         <button type="button" id="lang-en" data-set="en" aria-pressed="true">EN</button>
         <button type="button" id="lang-ja" data-set="ja" aria-pressed="false">日本語</button>
       </div>
-      <a class="cta sm" href="https://ryotoyoza.github.io/self-notes/app/" target="_blank" rel="noopener" data-ja="アプリを開く">Open the app</a>
+      <a class="cta sm" href="https://ryotoyoza.github.io/self-notes/app/" data-ja="アプリを開く">Open the app</a>
     </div>
   </div>
 </nav>
@@ -424,7 +437,7 @@ footer .sp{margin-left:auto}
       <h1 data-ja="思いついたら、<em>自分に送る</em>。<br>それだけでメモになる。">Take notes like you’re <em>texting yourself</em>.</h1>
       <p class="sub" data-ja="買い忘れそうなもの、寝る前にふと浮かんだこと、あとで調べたいこと。自分あてのトークに放り込む感覚で書けて、あとから探せるように勝手に片づきます。">You already message yourself. The shopping thing, the idea at 23:40, the thing to look up later. This keeps that habit exactly as it is — and files it for you.</p>
       <div class="herobtns">
-        <a class="cta" href="https://ryotoyoza.github.io/self-notes/app/" target="_blank" rel="noopener">
+        <a class="cta" href="https://ryotoyoza.github.io/self-notes/app/">
           <span data-ja="アプリを開く">Open the app</span>
           <svg viewBox="0 0 16 16"><use href="#i-arrow"/></svg>
         </a>
@@ -856,7 +869,7 @@ footer .sp{margin-left:auto}
   <div class="wrap">
     <h2 data-ja="次に何か思いついたら、自分あてに送ってみてください。">Next time you think of something, just send it to yourself.</h2>
     <p data-ja="登録は要りません。開いたらすぐ使えます。">Nothing to sign up for. It works the second you open it.</p>
-    <a class="cta" href="https://ryotoyoza.github.io/self-notes/app/" target="_blank" rel="noopener">
+    <a class="cta" href="https://ryotoyoza.github.io/self-notes/app/">
       <span data-ja="アプリを開く">Open the app</span>
       <svg viewBox="0 0 16 16"><use href="#i-arrow"/></svg>
     </a>
@@ -870,7 +883,7 @@ footer .sp{margin-left:auto}
 <footer>
   <div class="wrap">
     <span data-ja="じぶんメモ ｜ 自分に送るメモ">Self — notes you send</span>
-    <span class="sp"><a href="https://ryotoyoza.github.io/self-notes/app/" target="_blank" rel="noopener" data-ja="アプリを開く">Open the app</a></span>
+    <span class="sp"><a href="https://ryotoyoza.github.io/self-notes/app/" data-ja="アプリを開く">Open the app</a></span>
     <span><a href="https://github.com/RyotoYoza/self-notes" target="_blank" rel="noopener">GitHub</a></span>
   </div>
 </footer>
