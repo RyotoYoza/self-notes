@@ -127,6 +127,14 @@ h1,h2,.step h3,.moment h3,.feat h4{word-break:keep-all;overflow-wrap:break-word}
 html[lang="ja"] h1{font-size:clamp(29px,4.5vw,53px);line-height:1.2;letter-spacing:-.015em}
 html[lang="ja"] h2{font-size:clamp(23px,3vw,35px);line-height:1.28}
 html[lang="ja"] .step h3{font-size:clamp(20px,2.3vw,26px);line-height:1.3}
+/* Japanese body text breaks between any two characters, which splits words
+   like 「あとで」 across lines. auto-phrase breaks at phrase boundaries
+   instead; browsers without it simply ignore the declaration. */
+html[lang="ja"] p,
+html[lang="ja"] .note,
+html[lang="ja"] .annotlist li,
+html[lang="ja"] .moment h3,
+html[lang="ja"] .feat h4{line-break:strict;word-break:auto-phrase}
 h1 em{font-style:normal;color:var(--ac)}
 .sub{margin:0 0 34px;font-size:clamp(16px,1.6vw,19px);color:var(--tx2);max-width:30rem}
 .herobtns{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
@@ -396,7 +404,7 @@ footer .sp{margin-left:auto}
     <div class="navlinks">
       <a href="#how" data-ja="使い方">How it works</a>
       <a href="#desktop" data-ja="デスクトップ">Desktop</a>
-      <a href="#features" data-ja="特長">Features</a>
+      <a href="#features" data-ja="できること">Features</a>
     </div>
     <div class="navright">
       <div class="lang" role="group" aria-label="Language">
@@ -412,9 +420,9 @@ footer .sp{margin-left:auto}
 <header class="hero" id="top">
   <div class="wrap">
     <div>
-      <span class="kicker" data-ja="メモアプリ · 日本語と英語 · 無料">Notes app · English &amp; 日本語 · Free</span>
-      <h1 data-ja="自分に<em>メッセージを送る</em><br>感覚で、メモを取る。">Take notes like you’re <em>texting yourself</em>.</h1>
-      <p class="sub" data-ja="あなたはもう、自分にメッセージを送っています。買うもの、思いつき、あとで調べること。このアプリはその癖をそのまま残して、勝手に整理だけしてくれます。">You already message yourself. The shopping thing, the idea at 23:40, the thing to look up later. This keeps that habit exactly as it is — and files it for you.</p>
+      <span class="kicker" data-ja="メモアプリ ｜ 日本語・英語対応 ｜ 無料">Notes app · English &amp; 日本語 · Free</span>
+      <h1 data-ja="思いついたら、<em>自分に送る</em>。<br>それだけでメモになる。">Take notes like you’re <em>texting yourself</em>.</h1>
+      <p class="sub" data-ja="買い忘れそうなもの、寝る前にふと浮かんだこと、あとで調べたいこと。自分あてのトークに放り込む感覚で書けて、あとから探せるように勝手に片づきます。">You already message yourself. The shopping thing, the idea at 23:40, the thing to look up later. This keeps that habit exactly as it is — and files it for you.</p>
       <div class="herobtns">
         <a class="cta" href="https://ryotoyoza.github.io/self-notes/app/" target="_blank" rel="noopener">
           <span data-ja="アプリを開く">Open the app</span>
@@ -423,9 +431,9 @@ footer .sp{margin-left:auto}
         <a class="cta ghost" href="#how" data-ja="使い方を見る">See how it works</a>
       </div>
       <p class="trust">
-        <span><b></b><span data-ja="アカウント登録なし">No account</span></span>
+        <span><b></b><span data-ja="登録不要">No account</span></span>
         <span><b></b><span data-ja="データは端末の中だけ">Nothing leaves your device</span></span>
-        <span><b></b><span data-ja="オフラインでも動く">Works offline</span></span>
+        <span><b></b><span data-ja="オフラインでも使える">Works offline</span></span>
       </p>
     </div>
 
@@ -443,35 +451,35 @@ footer .sp{margin-left:auto}
               <span class="cav" style="--c:var(--ac)"><svg class="ic"><use href="#i-cal"/></svg></span>
               <span class="cb">
                 <span class="ct"><span class="cn" data-ja="ホーム">Home</span><span class="ctm" data-ja="火">Tue</span></span>
-                <span class="cbot"><span class="cpv" data-ja="デザインレビュー 木 14:00">Design review Thu 14:00</span><span class="cct">2</span></span>
+                <span class="cbot"><span class="cpv" data-ja="デザインレビュー 木14:00">Design review Thu 14:00</span><span class="cct">2</span></span>
               </span>
             </div>
             <div class="crow" style="--c:var(--c-work)">
               <span class="cav">W</span>
               <span class="cb">
                 <span class="ct"><span class="cn" data-ja="仕事">Work</span><span class="ctm">09:14</span></span>
-                <span class="cbot"><span class="cflag">⚑2</span><span class="cpv" data-ja="森さんから返信。月曜まで動かなくてよい。">Mori replied: nothing until Monday</span><span class="cct">6</span></span>
+                <span class="cbot"><span class="cflag">⚑2</span><span class="cpv" data-ja="森さんから返信。月曜まで動かなくてOK">Mori replied: nothing until Monday</span><span class="cct">6</span></span>
               </span>
             </div>
             <div class="crow" style="--c:var(--c-ideas)">
               <span class="cav">I</span>
               <span class="cb">
                 <span class="ct"><span class="cn" data-ja="アイデア">Ideas</span><span class="ctm" data-ja="昨日">Yest</span></span>
-                <span class="cbot"><span class="cpv" data-ja="書くんじゃなくて、送るメモアプリ">A notes app where you don’t write, you send</span><span class="cct">8</span></span>
+                <span class="cbot"><span class="cpv" data-ja="書くんじゃなくて送る、ってメモアプリ">A notes app where you don’t write, you send</span><span class="cct">8</span></span>
               </span>
             </div>
             <div class="crow" style="--c:var(--c-chores)">
               <span class="cav">C</span>
               <span class="cb">
                 <span class="ct"><span class="cn" data-ja="家事">Chores</span><span class="ctm" data-ja="昨日">Yest</span></span>
-                <span class="cbot"><span class="cpv" data-ja="浄水カートリッジ — 東レの方">Filter cartridge — the Toray one</span><span class="cct">12</span></span>
+                <span class="cbot"><span class="cpv" data-ja="浄水カートリッジ、東レのやつ">Filter cartridge — the Toray one</span><span class="cct">12</span></span>
               </span>
             </div>
             <div class="crow" style="--c:var(--c-hobby)">
               <span class="cav">H</span>
               <span class="cb">
                 <span class="ct"><span class="cn" data-ja="趣味">Hobby</span><span class="ctm" data-ja="土">Sat</span></span>
-                <span class="cbot"><span class="cpv" data-ja="暗室の予約が取れた">Darkroom booked</span><span class="cct">5</span></span>
+                <span class="cbot"><span class="cpv" data-ja="暗室、予約取れた">Darkroom booked</span><span class="cct">5</span></span>
               </span>
             </div>
             <div class="crow" style="--c:var(--c-uncat)">
@@ -492,25 +500,25 @@ footer .sp{margin-left:auto}
 <section class="band alt">
   <div class="wrap">
     <div class="shead">
-      <p class="slabel" data-ja="考え方">The idea</p>
-      <h2 data-ja="メモは書くのをやめた瞬間から、続くようになる。">Notes stop working the moment they feel like filing.</h2>
-      <p class="lede" data-ja="思いついた瞬間に「どこに書くか」を考えさせられると、人はメモを取るのをやめます。チャットならそうはならない。送るだけだから。">Ask someone to decide *where* a thought goes and they stop writing it down. A chat never asks that. You just send it.</p>
+      <p class="slabel" data-ja="考えかた">The idea</p>
+      <h2 data-ja="「あとで整理しよう」と思った時点で、メモは続かない。">Notes stop working the moment they feel like filing.</h2>
+      <p class="lede" data-ja="思いついた瞬間に「どこに書こう」と迷わせると、人はだんだん書かなくなります。トークなら迷いません。送って終わりだから。">Ask someone to decide *where* a thought goes and they stop writing it down. A chat never asks that. You just send it.</p>
     </div>
     <div class="moments">
       <div class="moment">
         <span class="n">01</span>
         <h3 data-ja="送る">Send it</h3>
-        <p data-ja="色を1つ選んで、送信。2タップで終わり。書くというより、報告する感覚。">Tap a colour, hit send. Two taps, done. It feels less like writing and more like telling someone.</p>
+        <p data-ja="色をひとつ選んで、送る。ふたタップで終わりです。書くというより、報告に近い感覚。">Tap a colour, hit send. Two taps, done. It feels less like writing and more like telling someone.</p>
       </div>
       <div class="moment">
         <span class="n">02</span>
         <h3 data-ja="勝手に片づく">It files itself</h3>
-        <p data-ja="送った瞬間に、その色の会話に入ります。あとで整理する作業は発生しません。">The moment it’s sent it’s already in the right conversation. There is no “sort this out later” step.</p>
+        <p data-ja="送った時点で、その色のトークに入っています。あとからまとめて整理する作業は、そもそも発生しません。">The moment it’s sent it’s already in the right conversation. There is no “sort this out later” step.</p>
       </div>
       <div class="moment">
         <span class="n">03</span>
-        <h3 data-ja="消えない">It stays yours</h3>
-        <p data-ja="データは端末の中だけ。アカウントもサーバーもなし。書き出して丸ごとバックアップできます。">It never leaves your device. No account, no server. Export the whole thing to one file whenever you like.</p>
+        <h3 data-ja="手元に残る">It stays yours</h3>
+        <p data-ja="データは端末の中だけ。アカウントもサーバーもありません。まるごと書き出して、自分で持っておけます。">It never leaves your device. No account, no server. Export the whole thing to one file whenever you like.</p>
       </div>
     </div>
   </div>
@@ -521,15 +529,15 @@ footer .sp{margin-left:auto}
   <div class="wrap">
     <div class="shead">
       <p class="slabel" data-ja="使い方">How it works</p>
-      <h2 data-ja="画面はこれだけです。">There are only really two screens.</h2>
-      <p class="lede" data-ja="ひとつは自分に送る画面。もうひとつは送ったものが並ぶ画面。以上。">One where you send things to yourself. One where the things you sent are waiting. That’s it.</p>
+      <h2 data-ja="画面は、実質ふたつだけ。">There are only really two screens.</h2>
+      <p class="lede" data-ja="自分に送る画面と、送ったものが並ぶ画面。それだけです。">One where you send things to yourself. One where the things you sent are waiting. That’s it.</p>
     </div>
 
     <!-- STEP 1 -->
     <div class="step">
-      <p class="stepnum"><span data-ja="ステップ 01 — 送る">Step 01 — Sending</span></p>
-      <h3 data-ja="色を選んで、送信するだけ。">Pick a colour, then send.</h3>
-      <p data-ja="カテゴリの選択は必須です。面倒に思えますが、これがあるおかげで「あとで整理する」が一生やってこなくなります。">Choosing a category is required. It sounds like friction — it’s the reason the “I’ll organise this later” pile never appears.</p>
+      <p class="stepnum"><span data-ja="ステップ01 ｜ 送る">Step 01 — Sending</span></p>
+      <h3 data-ja="色を選んで、送るだけ。">Pick a colour, then send.</h3>
+      <p data-ja="カテゴリは必ず選ぶ仕様です。ひと手間に見えますが、これがあるから「そのうちまとめて整理する日」が来ません。">Choosing a category is required. It sounds like friction — it’s the reason the “I’ll organise this later” pile never appears.</p>
 
       <div class="stage phone-stage" data-stage>
         <div class="stagegrid">
@@ -545,15 +553,15 @@ footer .sp{margin-left:auto}
                 <div class="day"><span data-ja="今日">Today</span></div>
                 <div class="line r">
                   <span class="meta"><span class="cattag" style="--c:var(--c-ideas)"><span class="dot"></span><span data-ja="アイデア">Ideas</span></span><span>07:12</span></span>
-                  <span class="bub" data-ja="書くんじゃなくて、送るメモアプリ">A notes app where you don’t write, you send</span>
+                  <span class="bub" data-ja="書くんじゃなくて送る、ってメモアプリ">A notes app where you don’t write, you send</span>
                 </div>
                 <div class="line r">
                   <span class="meta"><span class="cattag" style="--c:var(--c-chores)"><span class="dot"></span><span data-ja="家事">Chores</span></span><span>07:55</span></span>
-                  <span class="bub" data-ja="浄水カートリッジ — 東レの方。汎用品じゃない。">Filter cartridge — the Toray one, not the generic</span>
+                  <span class="bub" data-ja="浄水カートリッジ、東レのやつ。汎用品じゃない方">Filter cartridge — the Toray one, not the generic</span>
                 </div>
                 <div class="line r">
                   <span class="meta"><span class="cattag" style="--c:var(--c-work)"><span class="dot"></span><span data-ja="仕事">Work</span></span><span>08:41</span></span>
-                  <span class="bub" data-ja="森さんから返信。月曜まで動かなくてよい。">Mori replied: nothing to do until Monday.</span>
+                  <span class="bub" data-ja="森さんから返信。月曜まで動かなくてOK">Mori replied: nothing to do until Monday.</span>
                 </div>
               </div>
               <div class="dock">
@@ -568,7 +576,7 @@ footer .sp{margin-left:auto}
                   <span class="tog warn on"><i></i><span data-ja="緊急">Urgent</span></span>
                 </div>
                 <div class="ibar">
-                  <p data-ja="金曜の朝会までにQ3引き継ぎ資料を送る">Ship the Q3 handover doc before Friday</p>
+                  <p data-ja="金曜の朝会までにQ3の引き継ぎ資料送る">Ship the Q3 handover doc before Friday</p>
                   <span class="snd"><svg class="ic"><use href="#i-send"/></svg></span>
                 </div>
               </div>
@@ -591,10 +599,10 @@ footer .sp{margin-left:auto}
           </svg>
 
           <span class="note" style="left:1%;top:69%;text-align:right;max-width:176px">
-            <span data-ja="送る前に色を選ぶ。これが必須。">Pick the colour before you send. Not optional.</span>
+            <span data-ja="送る前に色を選ぶ。ここは必須">Pick the colour before you send. Not optional.</span>
           </span>
           <span class="note" style="left:79%;top:76%;max-width:200px">
-            <span data-ja="「緊急」は赤くして一番上に固定">“Urgent” turns it red and pins it to the top</span>
+            <span data-ja="「緊急」にすると赤くなって一番上に出る">“Urgent” turns it red and pins it to the top</span>
           </span>
           <span class="note" style="left:79%;top:91%;max-width:200px">
             <span data-ja="あとは送るだけ">Then just send it</span>
@@ -602,8 +610,8 @@ footer .sp{margin-left:auto}
         </div>
 
         <ul class="annotlist">
-          <li data-ja="送る前に色を選ぶ。これが必須。">Pick the colour before you send. Not optional.</li>
-          <li data-ja="「緊急」にすると赤くなって一番上に固定されます。">“Urgent” turns it red and pins it to the top.</li>
+          <li data-ja="送る前に色を選ぶ。ここは必須">Pick the colour before you send. Not optional.</li>
+          <li data-ja="「緊急」にすると赤くなって、一番上に固定されます。">“Urgent” turns it red and pins it to the top.</li>
           <li data-ja="「予定」をオンにすると、ホームのカレンダーに並びます。">“Schedule” puts it on the calendar on the Home screen.</li>
         </ul>
       </div>
@@ -611,9 +619,9 @@ footer .sp{margin-left:auto}
 
     <!-- STEP 2 -->
     <div class="step">
-      <p class="stepnum"><span data-ja="ステップ 02 — 見つける">Step 02 — Finding it</span></p>
-      <h3 data-ja="カテゴリは、会話になっています。">Every category is a conversation.</h3>
-      <p data-ja="「仕事」を開くと、送った順に並んでいます。急ぎのものは上に固定。あとから思い出したことは、元のメモに返信としてぶら下がります。">Open Work and it’s everything you sent, in order. Anything urgent is pinned across the top. Anything you remembered later hangs off the original as a reply.</p>
+      <p class="stepnum"><span data-ja="ステップ02 ｜ 見つける">Step 02 — Finding it</span></p>
+      <h3 data-ja="カテゴリが、そのままトークになる。">Every category is a conversation.</h3>
+      <p data-ja="「仕事」を開けば、送った順に並んでいます。急ぎのものは上に固定。あとから思い出したことは、元のメモに返信のかたちでぶら下がります。">Open Work and it’s everything you sent, in order. Anything urgent is pinned across the top. Anything you remembered later hangs off the original as a reply.</p>
 
       <div class="stage phone-stage" data-stage>
         <div class="stagegrid">
@@ -629,25 +637,25 @@ footer .sp{margin-left:auto}
               </div>
               <div class="pinned">
                 <div class="pinh"><span data-ja="⚑ 緊急 · 3">⚑ Urgent · 3</span><span class="more" data-ja="他1件 ⌄">1 more ⌄</span></div>
-                <div class="pinr" data-ja="金曜の朝会までにQ3引き継ぎ資料を送る">Ship the Q3 handover doc before Friday</div>
-                <div class="pinr" data-ja="駐車許可証の更新 — 火曜まで">Parking permit — expires Tue</div>
+                <div class="pinr" data-ja="金曜の朝会までにQ3の引き継ぎ資料送る">Ship the Q3 handover doc before Friday</div>
+                <div class="pinr" data-ja="駐車許可証の更新、火曜まで">Parking permit — expires Tue</div>
               </div>
               <div class="thr">
                 <div class="day"><span data-ja="今日">Today</span></div>
                 <div class="line r">
                   <span class="meta"><span>09:14</span></span>
-                  <span class="bub" data-ja="森さんに請求書の件を確認。月末って言ってた。">Ask Mori about the vendor invoice — he said end of month</span>
+                  <span class="bub" data-ja="森さんに請求書の件きく。月末って言ってた">Ask Mori about the vendor invoice — he said end of month</span>
                 </div>
                 <div class="line l">
                   <span class="meta"><span data-ja="追記">Added note</span><span>11:47</span></span>
                   <span class="bub">
-                    <i class="q" data-ja="森さんに請求書の件を確認…">Ask Mori about the vendor invoice…</i>
+                    <i class="q" data-ja="森さんに請求書の件きく…">Ask Mori about the vendor invoice…</i>
                     <span data-ja="請求書番号 INV-2291。経理は20日までに必要。">Invoice ref INV-2291. Finance needs it by the 20th.</span>
                   </span>
                 </div>
                 <div class="line r">
                   <span class="meta"><span class="sched" data-ja="▣ 予定">▣ Scheduled</span><span>13:30</span></span>
-                  <span class="bub" data-ja="デザインレビュー 木 14:00">Design review Thu 14:00</span>
+                  <span class="bub" data-ja="デザインレビュー 木14:00">Design review Thu 14:00</span>
                 </div>
               </div>
             </div>
@@ -669,20 +677,20 @@ footer .sp{margin-left:auto}
           </svg>
 
           <span class="note" style="left:1%;top:12%;text-align:right;max-width:176px">
-            <span data-ja="急ぎのものは常に上。2件だけ見えて、残りは開けます。">Urgent stays on top. Two at a time — expand for the rest.</span>
+            <span data-ja="急ぎは常に上。2件だけ出して、残りは開けば見える">Urgent stays on top. Two at a time — expand for the rest.</span>
           </span>
           <span class="note" style="left:79%;top:52%;max-width:200px">
-            <span data-ja="あとから足したメモは、元のメモにぶら下がる">Remembered it later? It hangs off the original, like a reply</span>
+            <span data-ja="あとから足したメモは元のメモにぶら下がる">Remembered it later? It hangs off the original, like a reply</span>
           </span>
           <span class="note" style="left:79%;top:76%;max-width:200px">
-            <span data-ja="「予定」付きはカレンダーにも出ます">Anything scheduled also lands on the Home calendar</span>
+            <span data-ja="「予定」をつけるとカレンダーにも出る">Anything scheduled also lands on the Home calendar</span>
           </span>
         </div>
 
         <ul class="annotlist">
-          <li data-ja="急ぎのものは常に上に固定。2件だけ見えて、残りは開けます。">Urgent notes stay pinned on top — two at a time, expand for the rest.</li>
-          <li data-ja="あとから足したメモは、元のメモに返信としてぶら下がります。">Remembered something later? It hangs off the original as a reply.</li>
-          <li data-ja="「予定」付きのメモは、ホームのカレンダーにも並びます。">Anything scheduled also appears on the Home calendar.</li>
+          <li data-ja="急ぎのものは常に上に固定。2件だけ表示して、残りは開けば見えます。">Urgent notes stay pinned on top — two at a time, expand for the rest.</li>
+          <li data-ja="あとから足したメモは、元のメモに返信のかたちでぶら下がります。">Remembered something later? It hangs off the original as a reply.</li>
+          <li data-ja="「予定」をつけたメモは、ホームのカレンダーにも並びます。">Anything scheduled also appears on the Home calendar.</li>
         </ul>
       </div>
     </div>
@@ -694,8 +702,8 @@ footer .sp{margin-left:auto}
   <div class="wrap">
     <div class="shead">
       <p class="slabel" data-ja="デスクトップ">On a bigger screen</p>
-      <h2 data-ja="同じ会話が、そのまま広がる。">The same conversation, just wider.</h2>
-      <p class="lede" data-ja="パソコンでは、左にカテゴリ、真ん中に選んだ会話、右に入力欄。仕事中に開いても浮きません。">On a desktop the categories sit on the left, the open conversation in the middle, and the box you type into stays on the right. It doesn’t look out of place next to your work chat.</p>
+      <h2 data-ja="同じトークが、そのまま広がるだけ。">The same conversation, just wider.</h2>
+      <p class="lede" data-ja="パソコンでは、左にカテゴリ、真ん中にいま開いているトーク、右に入力欄。仕事中に開きっぱなしでも浮きません。">On a desktop the categories sit on the left, the open conversation in the middle, and the box you type into stays on the right. It doesn’t look out of place next to your work chat.</p>
     </div>
 
     <div class="stage desk-stage" data-stage>
@@ -727,19 +735,19 @@ footer .sp{margin-left:auto}
               </header>
               <div class="pinned" style="margin:9px 14px 0">
                 <div class="pinh"><span data-ja="⚑ 緊急 · 3">⚑ Urgent · 3</span><span class="more" data-ja="他1件 ⌄">1 more ⌄</span></div>
-                <div class="pinr" data-ja="金曜の朝会までにQ3引き継ぎ資料を送る">Ship the Q3 handover doc before Friday standup</div>
-                <div class="pinr" data-ja="駐車許可証の更新 — 火曜まで">Call facilities — parking permit expires Tue</div>
+                <div class="pinr" data-ja="金曜の朝会までにQ3の引き継ぎ資料送る">Ship the Q3 handover doc before Friday standup</div>
+                <div class="pinr" data-ja="駐車許可証の更新、火曜まで">Call facilities — parking permit expires Tue</div>
               </div>
               <div class="thr">
                 <div class="day"><span data-ja="今日">Today</span></div>
                 <div class="line r">
                   <span class="meta"><span>09:14</span></span>
-                  <span class="bub" data-ja="森さんに請求書の件を確認。月末って言ってた。">Ask Mori about the vendor invoice — he said end of month</span>
+                  <span class="bub" data-ja="森さんに請求書の件きく。月末って言ってた">Ask Mori about the vendor invoice — he said end of month</span>
                 </div>
                 <div class="line l">
                   <span class="meta"><span data-ja="追記">Added note</span><span>11:47</span></span>
                   <span class="bub">
-                    <i class="q" data-ja="森さんに請求書の件を確認…">Ask Mori about the vendor invoice…</i>
+                    <i class="q" data-ja="森さんに請求書の件きく…">Ask Mori about the vendor invoice…</i>
                     <span data-ja="請求書番号 INV-2291。">Invoice ref INV-2291.</span>
                   </span>
                 </div>
@@ -751,11 +759,11 @@ footer .sp{margin-left:auto}
               <div class="dstream">
                 <div class="line r">
                   <span class="meta"><span class="cattag" style="--c:var(--c-chores)"><span class="dot"></span><span data-ja="家事">Chores</span></span><span>07:55</span></span>
-                  <span class="bub" data-ja="浄水カートリッジ — 東レの方。">Filter cartridge — the Toray one</span>
+                  <span class="bub" data-ja="浄水カートリッジ、東レのやつ">Filter cartridge — the Toray one</span>
                 </div>
                 <div class="line r">
                   <span class="meta"><span class="cattag" style="--c:var(--c-work)"><span class="dot"></span><span data-ja="仕事">Work</span></span><span>08:41</span></span>
-                  <span class="bub" data-ja="森さんから返信。月曜まで動かなくてよい。">Mori replied: nothing to do until Monday.</span>
+                  <span class="bub" data-ja="森さんから返信。月曜まで動かなくてOK">Mori replied: nothing to do until Monday.</span>
                 </div>
               </div>
               <div class="dcomp">
@@ -785,16 +793,16 @@ footer .sp{margin-left:auto}
         </svg>
 
         <span class="note" style="left:1.5%;top:111%;max-width:240px">
-          <span data-ja="カテゴリはここ。オレンジのバッジは未整理の数。">Your categories live here. The orange badge is the unsorted pile.</span>
+          <span data-ja="カテゴリはここ。オレンジの数字は未整理の件数">Your categories live here. The orange badge is the unsorted pile.</span>
         </span>
         <span class="note" style="left:59%;top:111%;text-align:right;max-width:270px">
-          <span data-ja="入力欄は動きません。どの画面からでも、そのまま自分に送れます。">The box you type into never moves. Whatever you’re looking at, you can still send.</span>
+          <span data-ja="入力欄は動かない。どの画面を見ていても、そのまま送れる">The box you type into never moves. Whatever you’re looking at, you can still send.</span>
         </span>
       </div>
 
       <ul class="annotlist">
-        <li data-ja="左がカテゴリ。数字は件数、オレンジのバッジは未整理の数。">Categories on the left. The orange badge is the unsorted pile.</li>
-        <li data-ja="入力欄は常に右にあります。どの画面を見ていても、そのまま自分に送れます。">The box you type into never moves — whatever you’re looking at, you can still send.</li>
+        <li data-ja="左がカテゴリ。数字は件数、オレンジは未整理の件数です。">Categories on the left. The orange badge is the unsorted pile.</li>
+        <li data-ja="入力欄は常に右にあります。どの画面を見ていても、そのまま送れます。">The box you type into never moves — whatever you’re looking at, you can still send.</li>
         <li data-ja="長押しか右クリックで、追記・緊急・カテゴリ変更ができます。">Long-press or right-click any note to add to it, flag it, or move it.</li>
       </ul>
     </div>
@@ -805,39 +813,39 @@ footer .sp{margin-left:auto}
 <section class="band" id="features">
   <div class="wrap">
     <div class="shead">
-      <p class="slabel" data-ja="中身">The rest of it</p>
-      <h2 data-ja="細かいところ。">The things you’d check before installing.</h2>
+      <p class="slabel" data-ja="そのほか">The rest of it</p>
+      <h2 data-ja="入れる前に気になるところ。">The things you’d check before installing.</h2>
     </div>
     <div class="feats">
       <div class="feat">
         <svg class="ic" viewBox="0 0 16 16"><path d="M8 2v7.4M5 6.8 8 9.8l3-3M3 11.5v1.4a.6.6 0 0 0 .6.6h8.8a.6.6 0 0 0 .6-.6v-1.4"/></svg>
         <h4 data-ja="ホーム画面に追加できる">Install it like an app</h4>
-        <p data-ja="ホーム画面に追加すれば、普通のアプリと同じように開けて、オフラインでも動きます。">Add it to your home screen and it opens like any other app — and works with no signal.</p>
+        <p data-ja="ホーム画面に追加すると、ふつうのアプリと同じように開けます。電波がないところでも使えます。">Add it to your home screen and it opens like any other app — and works with no signal.</p>
       </div>
       <div class="feat">
         <svg class="ic" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M2.4 8h11.2M8 2.2c3 3.4 3 8.2 0 11.6-3-3.4-3-8.2 0-11.6"/></svg>
         <h4 data-ja="日本語と英語">English and 日本語</h4>
-        <p data-ja="アプリ全体が両方に対応。設定でいつでも切り替えられます。日本語入力の変換中に誤送信しません。">The whole app, both languages, switchable any time. Enter never fires mid-conversion on a Japanese IME.</p>
+        <p data-ja="アプリ全体が両方に対応。設定でいつでも切り替えられます。変換中にEnterを押しても、途中で送信されません。">The whole app, both languages, switchable any time. Enter never fires mid-conversion on a Japanese IME.</p>
       </div>
       <div class="feat">
         <svg class="ic" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5.6"/><path d="M8 4.6V8l2.3 1.6"/></svg>
         <h4 data-ja="配色は5種類">Five palettes</h4>
-        <p data-ja="明るい配色も暗い配色も。端末のダークモードに合わせて自動で切り替えることもできます。">Light ones, dark ones, and one that follows your device when it goes dark.</p>
+        <p data-ja="明るい配色も暗い配色も用意しています。端末のダークモードに合わせて自動で切り替えることもできます。">Light ones, dark ones, and one that follows your device when it goes dark.</p>
       </div>
       <div class="feat">
         <svg class="ic" viewBox="0 0 16 16"><path d="M3 4.5h10M6.3 4.5V3a.6.6 0 0 1 .6-.6h2.2a.6.6 0 0 1 .6.6v1.5M4.4 4.5l.6 8.4a.7.7 0 0 0 .7.6h4.6a.7.7 0 0 0 .7-.6l.6-8.4"/></svg>
-        <h4 data-ja="消したものは、すぐには消えない">Deleting is reversible by design</h4>
-        <p data-ja="削除は印をつけるだけ。記録そのものは残るので、将来の同期でも矛盾が起きません。">A delete marks the note, it never shreds the record — so a future sync can never resurrect it by accident.</p>
+        <h4 data-ja="消しても、いきなりは消えない">Deleting is reversible by design</h4>
+        <p data-ja="削除は印をつけるだけで、記録自体は残しています。将来ほかの端末と同期しても、消したはずのメモが復活しません。">A delete marks the note, it never shreds the record — so a future sync can never resurrect it by accident.</p>
       </div>
       <div class="feat">
         <svg class="ic" viewBox="0 0 16 16"><path d="M8 13.8V6.4M5 9.4 8 6.4l3 3M3 3.2h10"/></svg>
         <h4 data-ja="まるごと書き出せる">Export the whole thing</h4>
-        <p data-ja="すべてのメモとカテゴリをJSONファイル1つに。読み込みは統合なので、上書きは起きません。">Every note and category as one file. Importing merges — it never overwrites what’s already there.</p>
+        <p data-ja="すべてのメモとカテゴリを、JSONファイル1つに書き出せます。読み込みは追加なので、いまあるメモが上書きされることはありません。">Every note and category as one file. Importing merges — it never overwrites what’s already there.</p>
       </div>
       <div class="feat">
         <svg class="ic" viewBox="0 0 16 16"><path d="M4 7V5.2a4 4 0 0 1 8 0V7"/><rect x="3" y="7" width="10" height="6.6" rx="1.4"/></svg>
         <h4 data-ja="アカウントなし">No account, no server</h4>
-        <p data-ja="登録もログインもありません。メモは端末の外に出ません。">No sign-up, no login, no inbox to leak. Your notes stay on your device.</p>
+        <p data-ja="登録もログインもありません。メモが端末の外に出ることもありません。">No sign-up, no login, no inbox to leak. Your notes stay on your device.</p>
       </div>
     </div>
   </div>
@@ -846,22 +854,22 @@ footer .sp{margin-left:auto}
 <!-- ===================== CLOSER ===================== -->
 <section class="band closer">
   <div class="wrap">
-    <h2 data-ja="次に何か思いついたら、自分に送ってみてください。">Next time you think of something, just send it to yourself.</h2>
-    <p data-ja="登録は不要です。開いた瞬間から使えます。">Nothing to sign up for. It works the second you open it.</p>
+    <h2 data-ja="次に何か思いついたら、自分あてに送ってみてください。">Next time you think of something, just send it to yourself.</h2>
+    <p data-ja="登録は要りません。開いたらすぐ使えます。">Nothing to sign up for. It works the second you open it.</p>
     <a class="cta" href="https://ryotoyoza.github.io/self-notes/app/" target="_blank" rel="noopener">
       <span data-ja="アプリを開く">Open the app</span>
       <svg viewBox="0 0 16 16"><use href="#i-arrow"/></svg>
     </a>
     <p class="installnote">
-      <b data-ja="iPhone をお使いの方へ：">On iPhone:</b>
-      <span data-ja="共有 →「ホーム画面に追加」で追加してください。追加していないサイトのデータは、7日間開かないと Safari が消してしまうことがあります。">open it in Safari, then Share → Add to Home Screen. Safari can clear the data of a site you haven’t opened in 7 days; an installed app isn’t treated that way.</span>
+      <b data-ja="iPhoneの場合：">On iPhone:</b>
+      <span data-ja="Safariで開いて、共有ボタンから「ホーム画面に追加」。追加せずに使っていると、7日ほど開かなかったデータをSafariが消してしまうことがあります。">open it in Safari, then Share → Add to Home Screen. Safari can clear the data of a site you haven’t opened in 7 days; an installed app isn’t treated that way.</span>
     </p>
   </div>
 </section>
 
 <footer>
   <div class="wrap">
-    <span data-ja="じぶんメモ — 自分に送るメモ">Self — notes you send</span>
+    <span data-ja="じぶんメモ ｜ 自分に送るメモ">Self — notes you send</span>
     <span class="sp"><a href="https://ryotoyoza.github.io/self-notes/app/" target="_blank" rel="noopener" data-ja="アプリを開く">Open the app</a></span>
     <span><a href="https://github.com/RyotoYoza/self-notes" target="_blank" rel="noopener">GitHub</a></span>
   </div>
