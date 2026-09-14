@@ -128,7 +128,7 @@ button { cursor: pointer; border: 0; background: none; }
 .row-meta { display: flex; gap: 8px; align-items: center; font-family: var(--mono);
   font-size: 9.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
 .bub {
-  max-width: 72%; padding: 8px 12px;
+  max-width: 100%; padding: 8px 12px;
   background: var(--me); color: var(--me-ink); border: var(--bub-border);
   border-radius: var(--radius) var(--tail) var(--radius) var(--radius);
   font-size: 13.5px; line-height: 1.55; font-family: var(--note-font);
@@ -155,7 +155,13 @@ button { cursor: pointer; border: 0; background: none; }
 .sched-tag .ic { width: 9px; height: 9px; stroke-width: 2.1; }
 
 /* the hover action button on a bubble */
-.bub-wrap { position: relative; display: flex; }
+/* The width cap lives here, not on .bub. As a flex item the wrapper resolves
+   to fit-content, so a bubble whose text is wider than the pane used to
+   stretch it across the whole row — and the bubble then sat at that
+   full-width wrapper's left edge, defeating the row's flex-end alignment.
+   Capping the wrapper makes it hug the bubble, which also keeps the hover
+   button pinned to the bubble's corner instead of the far side of the row. */
+.bub-wrap { position: relative; display: flex; max-width: 72%; }
 .dots {
   position: absolute; top: -9px; right: -6px; width: 24px; height: 22px;
   display: grid; place-items: center; border-radius: var(--radius-ui);
@@ -456,7 +462,7 @@ button { cursor: pointer; border: 0; background: none; }
   .main { border-inline: 0; grid-row: 2; }
   .chat { grid-row: 2; border-top: 0; }
   .main[hidden], .chat[hidden] { display: none; }
-  .bub { max-width: 84%; }
+  .bub-wrap { max-width: 84%; }
   .mobile-top {
     display: flex; align-items: center; gap: 10px; padding: 9px 12px;
     background: var(--head-bg); border-bottom: 1px solid var(--line); grid-row: 1;
