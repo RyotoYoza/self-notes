@@ -115,19 +115,19 @@ footer{margin-top:40px;font-family:var(--mono);font-size:10.5px;color:var(--ink-
 
 <header class="mast">
   <p class="eyebrow">Self · じぶんメモ — build status</p>
-  <h1>The phone navigates like a messaging app now.</h1>
-  <p class="lede">Every component of the note app, what state it is in, and what proves it works. The data layer was built and tested before any UI existed, so a backup is trustworthy from the first version rather than the tenth.</p>
+  <h1>It’s live. Open it on your phone.</h1>
+  <p class="lede"><a href="https://ryotoyoza.github.io/self-notes/" style="color:inherit">ryotoyoza.github.io/self-notes</a> — installable, offline-capable, five palettes, English and Japanese. Every component below, what state it is in, and what proves it works.</p>
 </header>
 
 <div class="summary">
-  <div class="stat is-done"><span class="n">20</span><span class="l">Built &amp; verified</span></div>
-  <div class="stat is-wait"><span class="n">5</span><span class="l">Waiting on you</span></div>
-  <div class="stat"><span class="n">2</span><span class="l">Not started</span></div>
+  <div class="stat is-done"><span class="n">25</span><span class="l">Built &amp; verified</span></div>
+  <div class="stat is-wait"><span class="n">3</span><span class="l">Waiting on you</span></div>
+  <div class="stat"><span class="n">1</span><span class="l">Not started</span></div>
   <div class="stat"><span class="n">16</span><span class="l">Tests passing</span></div>
 </div>
 
-<div class="bar" role="img" aria-label="20 of 27 components built, 5 waiting on input, 2 not started">
-  <i class="d" style="width:74%"></i><i class="w" style="width:18%"></i>
+<div class="bar" role="img" aria-label="25 of 29 components built, 3 waiting on input, 1 not started">
+  <i class="d" style="width:86%"></i><i class="w" style="width:10%"></i>
 </div>
 <p class="barkey">
   <span><b style="background:var(--done)"></b>Built &amp; verified</span>
@@ -176,12 +176,20 @@ footer{margin-top:40px;font-family:var(--mono);font-size:10.5px;color:var(--ink-
   <div class="phead">
     <span class="pnum">Phase 02</span>
     <h2>The app</h2>
-    <span class="pfrac">12 / 12 done</span>
+    <span class="pfrac">15 / 15 done</span>
   </div>
   <p class="pnote">Layout is fixed across both skins: category rail on the left, the selected page in the middle, the chat with yourself on the right.</p>
   <div class="rows">
     <div class="row done">
-      <div><p class="nm">Two skins, user-selectable</p><p class="de">Desk and Yakan, plus “follow system” which picks Desk in light mode and Yakan when the device goes dark. Colour, corner radius and typeface all swap from one <code>data-skin</code> attribute.</p></div>
+      <div><p class="nm">Five palettes, user-selectable</p><p class="de">Slate &amp; Amber (default), Graphite &amp; Iris, Obsidian &amp; Jade, Porcelain &amp; Cobalt, Bone &amp; Oxblood — plus “follow system”, which uses Porcelain by day and Slate when the device goes dark. Shape and typeface are shared; a palette redefines colour only, which is why five cost no more than two.</p></div>
+      <span class="pill done">Done</span>
+    </div>
+    <div class="row done">
+      <div><p class="nm">Cocoon — the phone’s visual language</p><p class="de">Conversation rows are cards with their own elevation and gap, avatars are rings rather than filled circles, the composer is a sheet with a grabber, and there is not a single divider line on screen. Depth does the separating.</p></div>
+      <span class="pill done">Done</span>
+    </div>
+    <div class="row done">
+      <div><p class="nm">Uncategorised sweep</p><p class="de">Your unfiled notes one at a time with the category chips right underneath, the rest of the pile peeking out below the card, and a Skip. Reachable from the Uncategorised page on both desktop and phone.</p></div>
       <span class="pill done">Done</span>
     </div>
     <div class="row done">
@@ -255,13 +263,13 @@ footer{margin-top:40px;font-family:var(--mono);font-size:10.5px;color:var(--ink-
   <div class="phead">
     <span class="pnum">Phase 04</span>
     <h2>Your call before I continue</h2>
-    <span class="pfrac">0 / 5</span>
+    <span class="pfrac">0 / 3</span>
   </div>
   <p class="pnote">These are blocked on material or decisions only you have. Everything above ships without them.</p>
   <div class="rows">
     <div class="row wait">
-      <div><p class="nm">Phone direction &amp; palettes</p><p class="de">Three phone directions (Aurora, Kiosk, Cocoon) and five palette candidates are drawn up and waiting on your pick — one direction, two palettes. The two you choose replace Desk and Yakan as the app’s selectable themes.</p></div>
-      <span class="pill wait">Needs you</span>
+      <div><p class="nm">Phone direction &amp; palettes</p><p class="de">Cocoon, with all five palettes shipped as selectable themes and Slate &amp; Amber as the default.</p></div>
+      <span class="pill done">Done</span>
     </div>
     <div class="row wait">
       <div><p class="nm">Architecture &amp; how-to manual</p><p class="de">The detailed one, for you: data model, module boundaries, how to run, build and deploy, and what changes when a backend arrives.</p></div>
@@ -287,21 +295,18 @@ footer{margin-top:40px;font-family:var(--mono);font-size:10.5px;color:var(--ink-
   <div class="phead">
     <span class="pnum">Phase 05</span>
     <h2>Not started</h2>
-    <span class="pfrac">0 / 3</span>
+    <span class="pfrac">0 / 1</span>
   </div>
   <div class="rows">
     <div class="row todo">
-      <div><p class="nm">Deployment</p><p class="de">GitHub is authenticated as <code>RyotoYoza</code>, so GitHub Pages is the short path. I need the repo name and whether it is public before I push anything.</p></div>
-      <span class="pill wait">Needs you</span>
+      <div><p class="nm">Deployment</p><p class="de">Live at <code>ryotoyoza.github.io/self-notes</code> from the public repo <code>RyotoYoza/self-notes</code>. Every push to main runs the tests and redeploys only if they pass. Service worker, manifest and icons all verified on the live URL.</p></div>
+      <span class="pill done">Done</span>
     </div>
     <div class="row todo">
       <div><p class="nm">Reordering categories by drag</p><p class="de">Order is stored on every category and respected by the rail; only the dragging is missing. Small job, say if you want it.</p></div>
       <span class="pill todo">Not started</span>
     </div>
-    <div class="row todo">
-      <div><p class="nm">Uncategorised sweep</p><p class="de">My suggestion, not in your original plan: a screen to file a batch of Uncategorised notes at once. Waiting on your yes or no.</p></div>
-      <span class="pill todo">Your call</span>
-    </div>
+
   </div>
 </section>
 
@@ -310,6 +315,7 @@ footer{margin-top:40px;font-family:var(--mono);font-size:10.5px;color:var(--ink-
   <dl>
     <div><dt>Test suite</dt><dd><b>16 / 16</b> passing</dd></div>
     <div><dt>Phone nav</dt><dd>List → conversation, verified</dd></div>
+    <div><dt>Live URL</dt><dd>Service worker, manifest, icons all 200</dd></div>
     <div><dt>Type check</dt><dd><b>Clean</b>, strict mode</dd></div>
     <div><dt>Production build</dt><dd><b>93 KB</b> gzipped</dd></div>
     <div><dt>Schema version</dt><dd><b>1</b></dd></div>
@@ -319,22 +325,18 @@ footer{margin-top:40px;font-family:var(--mono);font-size:10.5px;color:var(--ink-
 </section>
 
 <section class="asks">
-  <h2>Three things from you</h2>
-  <p>In the order they unblock work.</p>
+  <h2>Two things from you</h2>
+  <p>The app is shipped. These are what is left.</p>
   <div class="ask">
     <span class="q">01</span>
-    <span class="b"><b>One phone direction and two palettes</b><span>Both are drawn up in the phone round-two page. The two palettes become the app’s selectable themes.</span></span>
+    <span class="b"><b>Use it for a few days, then tell me what irritates you</b><span>Install it from the live URL. Daily use finds things no amount of review does.</span></span>
   </div>
   <div class="ask">
     <span class="q">02</span>
-    <span class="b"><b>Repo name, and public or private?</b><span>GitHub Pages needs a public repo unless you have GitHub Pro. Nothing is pushed until you say.</span></span>
-  </div>
-  <div class="ask">
-    <span class="q">03</span>
-    <span class="b"><b>The Uncategorised sweep — yes or no?</b><span>Not part of your original plan, so I have not built it. If choosing a category is mandatory, “Uncategorised, sort later” quietly becomes the default path — this is insurance on that.</span></span>
+    <span class="b"><b>Images and ideas for the poster and landing page</b><span>You said you would send these at this stage. The app is deployable now, so these are the last things blocked.</span></span>
   </div>
 </section>
 
-<footer>Updated 15 September 2026 · phone rework · Self / じぶんメモ</footer>
+<footer>Updated 15 September 2026 · deployed · Self / じぶんメモ</footer>
 
 </div>
